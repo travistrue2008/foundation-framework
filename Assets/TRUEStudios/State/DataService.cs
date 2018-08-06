@@ -8,10 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-namespace TRUEStudios.State
-{
-	public class DataService : Service
-	{
+namespace TRUEStudios.State {
+	public class DataService : Service {
 	}
 }

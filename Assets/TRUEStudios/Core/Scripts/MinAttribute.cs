@@ -7,16 +7,12 @@
 using System;
 using UnityEngine;
 
-
-namespace TRUEStudios.Core
-{
+namespace TRUEStudios.Core {
 	[AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
-	public class MinAttribute : PropertyAttribute
-	{
+	public class MinAttribute : PropertyAttribute {
 		public readonly float min;
 
-		public MinAttribute(float min)
-		{
+		public MinAttribute (float min) {
 			this.min = min;
 		}
 	}

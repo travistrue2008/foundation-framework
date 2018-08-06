@@ -6,13 +6,9 @@
 
 using UnityEngine;
 
-
-namespace TRUEStudios.Tweens
-{
-	public class PositionTween : Tween<Vector3>
-	{
-		public enum CoordinateSpace
-		{
+namespace TRUEStudios.Tweens {
+	public class PositionTween : Tween<Vector3> {
+		public enum CoordinateSpace {
 			Local,
 			Global
 		}
@@ -23,25 +19,23 @@ namespace TRUEStudios.Tweens
 		#endregion
 
 		#region Properties
-		public CoordinateSpace transformSpace {
+		public CoordinateSpace TransformSpace {
 			set { _transformSpace = value; }
 			get { return _transformSpace; }
 		}
 		#endregion
 
 		#region Methods
-		public override void ApplyResult()
-		{
+		public override void ApplyResult () {
 			// handle based on transform space
-			_result = ((_end - _begin) * distributedValue) + _begin;
-			switch (_transformSpace)
-			{
+			_result = ((_end - _begin) * DistributedValue) + _begin;
+			switch (_transformSpace) {
 				case CoordinateSpace.Local:
-					targetTransform.localPosition = _result;
+					TargetTransform.localPosition = _result;
 					break;
 
 				case CoordinateSpace.Global:
-					targetTransform.position = _result;
+					TargetTransform.position = _result;
 					break;
 			}
 		}

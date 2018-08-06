@@ -8,14 +8,11 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 
-
-namespace TRUEStudios.Core
-{
+namespace TRUEStudios.Core {
 	[Serializable]
 	public class CounterEvent : UnityEvent<int> { }
 
-	public class Counter : MonoBehaviour
-	{
+	public class Counter : MonoBehaviour {
 		#region Fields
 		[SerializeField]
 		private int _targetValue = 0;
@@ -28,31 +25,32 @@ namespace TRUEStudios.Core
 		#endregion
 
 		#region Properties
-		public UnityEvent onReachTarget { get { return _onReachTarget; } }
-		public CounterEvent onChange { get { return _onChange; } }
+		public UnityEvent OnReachTarget { get { return _onReachTarget; } }
+		public CounterEvent OnChange { get { return _onChange; } }
 
-		public int targetValue
-		{
+		public int TargetValue {
 			set {
 				_targetValue = value;
-				if (_value == _targetValue)
+				if (_value == _targetValue) {
 					_onReachTarget.Invoke();
+				}
 			}
 
 			get { return _value; }
 		}
 
-		public int value
-		{
+		public int Value {
 			set {
 				int oldValue = _value;
 				_value = value;
 
-				if (oldValue != _value)
+				if (oldValue != _value) {
 					_onChange.Invoke(_value);
+				}
 
-				if (_value == _targetValue)
+				if (_value == _targetValue) {
 					_onReachTarget.Invoke();
+				}
 			}
 
 			get { return _value; }
@@ -60,24 +58,20 @@ namespace TRUEStudios.Core
 		#endregion
 
 		#region Methods
-		public void Offset(int offset)
-		{
-			value += offset;
+		public void Offset (int offset) {
+			Value += offset;
 		}
 
-		public void Increment()
-		{
-			++value;
+		public void Increment () {
+			++Value;
 		}
 
-		public void Decrement()
-		{
-			--value;
+		public void Decrement () {
+			--Value;
 		}
 
-		public void Reset()
-		{
-			value = 0;
+		public void Reset () {
+			Value = 0;
 		}
 		#endregion
 	}

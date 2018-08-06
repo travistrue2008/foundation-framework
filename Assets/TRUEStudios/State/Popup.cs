@@ -10,11 +10,8 @@ using UnityEngine.Events;
 
 using TRUEStudios.Tweens;
 
-
-namespace TRUEStudios.State
-{
-	public class Popup : MonoBehaviour
-	{
+namespace TRUEStudios.State {
+	public class Popup : MonoBehaviour {
 		#region Fields
 		[SerializeField]
 		private Tween _transitionTween;
@@ -23,31 +20,31 @@ namespace TRUEStudios.State
 		#endregion
 
 		#region Properties
-		public Tween transitionTween { get { return _transitionTween; } }
-		public UnityEvent onClose { get { return _onClose; } }
+		public Tween TransitionTween { get { return _transitionTween; } }
+		public UnityEvent OnClose { get { return _onClose; } }
 		#endregion
 
 		#region Setup
-		protected virtual void Awake()
-		{
-			if (_transitionTween == null)
+		protected virtual void Awake () {
+			if (_transitionTween == null) {
 				_transitionTween = GetComponent<Tween>();
+			}
 		}
 
-		protected virtual void OnDestroy()
-		{
+		protected virtual void OnDestroy () {
 			// signal the closed event
-			if (_onClose != null)
+			if (_onClose != null) {
 				_onClose.Invoke();
+			}
 		}
 
-		public void Dismiss()
-		{
+		public void Dismiss () {
 			// only pop the last popup off the stack if it's this particular popup
-			if (Services.Get<PopupService>().currentPopup == this)
+			if (Services.Get<PopupService>().currentPopup == this) {
 				Services.Get<PopupService>().PopPopup();
-			else
+			} else {
 				Debug.LogWarning("This popup isn't the active popup.");
+			}
 		}
 		#endregion
 	}

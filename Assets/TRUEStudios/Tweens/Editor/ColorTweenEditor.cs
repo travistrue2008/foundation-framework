@@ -9,9 +9,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-
-namespace TRUEStudios.Tweens
-{
+namespace TRUEStudios.Tweens {
 	[CustomEditor(typeof(ColorTween)), CanEditMultipleObjects]
 	public class ColorTweenEditor : TweenEditor<ColorTween> { }
 }

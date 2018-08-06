@@ -6,12 +6,9 @@
 
 using UnityEngine;
 
-
-namespace TRUEStudios.Action
-{
+namespace TRUEStudios.Action {
 	[RequireComponent(typeof(AudioSource))]
-	public class SoundAction : MonoBehaviour
-	{
+	public class SoundAction : MonoBehaviour {
 		#region Fields
 		public AudioClip defaultClip;
 
@@ -19,18 +16,15 @@ namespace TRUEStudios.Action
 		#endregion
 
 		#region Methods
-		private void Awake()
-		{
+		private void Awake () {
 			_source = GetComponent<AudioSource>();
 		}
 
-		public void Play()
-		{
+		public void Play () {
 			Play(defaultClip);
 		}
 
-		public void Play(AudioClip clip)
-		{
+		public void Play (AudioClip clip) {
 			_source.PlayOneShot(clip);
 		}
 		#endregion

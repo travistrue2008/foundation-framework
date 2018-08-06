@@ -9,14 +9,11 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
-
-namespace TRUEStudios.Core
-{
+namespace TRUEStudios.Core {
 	[Serializable]
 	public class TimerEvent : UnityEvent<float> { }
 
-	public class Timer : MonoBehaviour
-	{
+	public class Timer : MonoBehaviour {
 		#region Fields
 		[SerializeField]
 		private bool _playOnAwake;
@@ -40,27 +37,24 @@ namespace TRUEStudios.Core
 		#endregion
 
 		#region Properties
-		public bool isPlaying { get { return _timerRoutine != null; } }
-		public UnityEvent onPlay { get { return _onPlay; } }
-		public UnityEvent onFinish { get { return _onFinish; } }
-		public UnityEvent onIterate { get { return _onIterate; } }
-		public TimerEvent onUpdate { get { return _onUpdate; } }
-		public TimerEvent onProgress { get { return _onProgress; } }
+		public bool IsPlaying { get { return _timerRoutine != null; } }
+		public UnityEvent OnPlay { get { return _onPlay; } }
+		public UnityEvent OnFinish { get { return _onFinish; } }
+		public UnityEvent OnIterate { get { return _onIterate; } }
+		public TimerEvent OnUpdate { get { return _onUpdate; } }
+		public TimerEvent OnProgress { get { return _onProgress; } }
 
-		public bool isLooping
-		{
+		public bool IsLooping {
 			set { _looping = value; }
 			get { return _looping; }
 		}
 
-		public float duration
-		{
+		public float Duration {
 			set { _duration = Mathf.Max(Mathf.Epsilon, value); }
 			get { return _duration; }
 		}
 
-		public float progress
-		{
+		public float Progress {
 			set {
 				float val = Mathf.Clamp01(value);
 				_currentTime = val / _duration;
@@ -73,22 +67,21 @@ namespace TRUEStudios.Core
 		#endregion
 
 		#region Private Methods
-		private void Awake()
-		{
-			if (_playOnAwake)
+		private void Awake () {
+			if (_playOnAwake) {
 				Play();
+			}
 		}
 
-		private IEnumerator ProcessTimer(float delay)
-		{
+		private IEnumerator ProcessTimer (float delay) {
 			// process the delay
-			if (delay > 0.0f)
+			if (delay > 0.0f) {
 				yield return new WaitForSeconds(delay);
+			}
 
 			// update the current time
 			_onPlay.Invoke(); // signal play event
-			while (_looping || _currentTime < _duration)
-			{
+			while (_looping || _currentTime < _duration) {
 				Increment();
 				yield return null;
 			}
@@ -98,62 +91,58 @@ namespace TRUEStudios.Core
 		#endregion
 
 		#region Actions
-		public void Play(float delay = 0.0f)
-		{
+		public void Play (float delay = 0.0f) {
 			// start the coroutine if not already
-			if (_timerRoutine == null)
+			if (_timerRoutine == null) {
 				_timerRoutine = StartCoroutine(ProcessTimer(delay));
+			}
 		}
 
-		public void Increment()
-		{
+		public void Increment () {
 			// make sure the timer can run
-			if (_currentTime >= _duration)
+			if (_currentTime >= _duration) {
 				return;
+			}
 
 			// update and bound _currentTime
 			_currentTime = Mathf.Min(_currentTime + Time.deltaTime, _duration);
-			if (_currentTime >= _duration)
-			{
+			if (_currentTime >= _duration) {
 				// check if looping
-				if (_looping)
-				{
+				if (_looping) {
 					// decrement the duration and signal iteration
 					_currentTime -= _duration;
 					_onIterate.Invoke();
-				} else
+				} else {
 					_currentTime = _duration; // bound to duration
+				}
 			}
 
 			// signal changed event
 			_onUpdate.Invoke(_currentTime);
-			_onProgress.Invoke(progress);
+			_onProgress.Invoke(Progress);
 
 			// check if finished
-			if (progress == 1.0f)
+			if (Progress == 1.0f) {
 				_onFinish.Invoke();
+			}
 		}
 
-		public void Pause()
-		{
+		public void Pause () {
 			// stop the currently-playing coroutine
-			if (_timerRoutine != null)
-			{
+			if (_timerRoutine != null) {
 				StopCoroutine(_timerRoutine);
 				_timerRoutine = null;
 			}
 		}
 
-		public void Stop()
-		{
+		public void Stop () {
 			// similar to pause except progress is reset
 			Pause();
 			Reset();
 		}
 
-		public void Reset()
-		{
-			progress = 0.0f;
+		public void Reset () {
+			Progress = 0.0f;
 		}
 		#endregion
 	}

@@ -6,15 +6,11 @@
 
 using UnityEngine;
 
-
-namespace TRUEStudios.Tweens
-{
-	public class RotationTween : Tween<Vector3>
-	{
+namespace TRUEStudios.Tweens {
+	public class RotationTween : Tween<Vector3> {
 		private enum Axis { X, Y, Z }
 
-		public enum Mode
-		{
+		public enum Mode {
 			Nearest,
 			Farthest,
 			Clockwise,
@@ -67,79 +63,74 @@ namespace TRUEStudios.Tweens
 		#endregion
 
 		#region Override Methods
-		protected override void BeginWillBeSet(Vector3 to)
-		{
+		protected override void BeginWillBeSet (Vector3 to) {
 			_fixedBegin = BoundAngle(to);
 			FindDifference();
 		}
 
-		protected override void EndWillBeSet(Vector3 to)
-		{
+		protected override void EndWillBeSet (Vector3 to) {
 			_fixedEnd = BoundAngle(to);
 			FindDifference();
 		}
 		#endregion
 
 		#region Methods
-		public override void ApplyResult()
-		{
-			_result = ((_end - _begin) * distributedValue) + _begin;
-			targetTransform.localRotation = Quaternion.Euler(_result);
+		public override void ApplyResult () {
+			_result = ((_end - _begin) * DistributedValue) + _begin;
+			TargetTransform.localRotation = Quaternion.Euler(_result);
 		}
 
-		private Vector3 BoundAngle(Vector3 eulerAngles)
-		{
+		private Vector3 BoundAngle (Vector3 eulerAngles) {
 			// wrap all angles to a domain of 0 - 360 degrees
-			while (eulerAngles.x < 0.0f) eulerAngles.x = (180.0f + eulerAngles.x) + 180.0f;
-			while (eulerAngles.y < 0.0f) eulerAngles.y = (180.0f + eulerAngles.y) + 180.0f;
-			while (eulerAngles.z < 0.0f) eulerAngles.z = (180.0f + eulerAngles.z) + 180.0f;
-			while (eulerAngles.x >= 360.0f) eulerAngles.x -= 360.0f;
-			while (eulerAngles.y >= 360.0f) eulerAngles.y -= 360.0f;
-			while (eulerAngles.z >= 360.0f) eulerAngles.z -= 360.0f;
+			while (eulerAngles.x < 0.0f) { eulerAngles.x = (180.0f + eulerAngles.x) + 180.0f; }
+			while (eulerAngles.y < 0.0f) { eulerAngles.y = (180.0f + eulerAngles.y) + 180.0f; }
+			while (eulerAngles.z < 0.0f) { eulerAngles.z = (180.0f + eulerAngles.z) + 180.0f; }
+			while (eulerAngles.x >= 360.0f) { eulerAngles.x -= 360.0f; }
+			while (eulerAngles.y >= 360.0f) { eulerAngles.y -= 360.0f; }
+			while (eulerAngles.z >= 360.0f) { eulerAngles.z -= 360.0f; }
 			return eulerAngles;
 		}
 
-		private void FindDifference()
-		{
+		private void FindDifference () {
 			_diff = _fixedEnd - _fixedBegin;
 			_diff.x = GetRotationAngle(xMode, _diff.x);
 			_diff.y = GetRotationAngle(yMode, _diff.y);
 			_diff.z = GetRotationAngle(zMode, _diff.z);
 		}
 
-		private float GetRotationAngle(Mode mode, float angle)
-		{
+		private float GetRotationAngle (Mode mode, float angle) {
 			// set the component based on rotation mode
-			switch (mode)
-			{
+			switch (mode) {
 				case Mode.Nearest:
-					if (Mathf.Abs(angle) > 180.0f)
-					{
-						if (angle > 0.0f)
+					if (Mathf.Abs(angle) > 180.0f) {
+						if (angle > 0.0f) {
 							angle = (360.0f - angle) * -1.0f;
-						else
+						} else {
 							angle = 360.0f - Mathf.Abs(angle);
+						}
 					}
 					break;
 
 				case Mode.Farthest:
-					if (Mathf.Abs(angle) < 180.0f)
-					{
-						if (angle > 0.0f)
+					if (Mathf.Abs(angle) < 180.0f) {
+						if (angle > 0.0f) {
 							angle = (360.0f - angle) * -1.0f;
-						else
+						} else {
 							angle = 360.0f - Mathf.Abs(angle);
+						}
 					}
 					break;
 
 				case Mode.Clockwise:
-					if (angle > 0.0f)
+					if (angle > 0.0f) {
 						angle = (360.0f - angle) * -1.0f;
+					}
 					break;
 
 				case Mode.CounterClockwise:
-					if (angle < 0.0f)
+					if (angle < 0.0f) {
 						angle = 360.0f - Mathf.Abs(angle);
+					}
 					break;
 			}
 

@@ -7,29 +7,29 @@
 using UnityEditor;
 using UnityEngine;
 
-
-namespace TRUEStudios.Core
-{
+namespace TRUEStudios.Core {
 	[CustomPropertyDrawer(typeof(MaxAttribute))]
-	public class MaxPropertyDrawer : PropertyDrawer
-	{
+	public class MaxPropertyDrawer : PropertyDrawer {
 		#region Properties
-		public MaxAttribute reference { get { return attribute as MaxAttribute; } }
+		public MaxAttribute Reference {
+			get {
+				return attribute as MaxAttribute;
+			}
+		}
 		#endregion
 
 		#region Methods
-		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
-		{
+		public override void OnGUI (Rect position, SerializedProperty property, GUIContent label) {
 			// handle based on type
 			EditorGUI.PropertyField(position, property, label);
 			switch (property.propertyType)
 			{
 				case SerializedPropertyType.Integer:
-					property.intValue = (int)Mathf.Min(reference.max, property.intValue);
+					property.intValue = (int)Mathf.Min(Reference.max, property.intValue);
 					break;
 
 				case SerializedPropertyType.Float:
-					property.floatValue = Mathf.Min(reference.max, property.floatValue);
+					property.floatValue = Mathf.Min(Reference.max, property.floatValue);
 					break;
 
 				default:

@@ -6,23 +6,18 @@
 
 using UnityEngine;
 
-
-namespace TRUEStudios.Tweens
-{
-	public class ScaleTween : Tween<Vector3>
-	{
+namespace TRUEStudios.Tweens {
+	public class ScaleTween : Tween<Vector3> {
 		#region Methods
-#if UNITY_EDITOR
-		private ScaleTween()
-		{
+		#if UNITY_EDITOR
+		private ScaleTween () {
 			begin = end = Vector3.one;
 		}
-#endif
+		#endif
 
-		public override void ApplyResult()
-		{
-			_result = ((_end - _begin) * distributedValue) + _begin;
-			targetTransform.localScale = _result;
+		public override void ApplyResult () {
+			_result = ((_end - _begin) * DistributedValue) + _begin;
+			TargetTransform.localScale = _result;
 		}
 		#endregion
 	}

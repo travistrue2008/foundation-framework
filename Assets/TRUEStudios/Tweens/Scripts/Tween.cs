@@ -11,14 +11,11 @@ using UnityEngine.Events;
 
 using TRUEStudios.Core;
 
-
-namespace TRUEStudios.Tweens
-{
+namespace TRUEStudios.Tweens {
 	[Serializable]
 	public class TweenEvent : UnityEvent<float> { }
 
-	public class Tween : MonoBehaviour
-	{
+	public class Tween : MonoBehaviour {
 		public enum AwakeTarget { Begin, End }
 		public enum PlaybackMode { Once, Looping, Pingpong }
 		public enum PlaybackState { Stopped, Playing }
@@ -31,7 +28,7 @@ namespace TRUEStudios.Tweens
 		[SerializeField]
 		private PlaybackState _state = PlaybackState.Stopped;
 		[SerializeField]
-		private bool _playForward = true;
+		private bool _playingForward = true;
 		[SerializeField, Min(0)]
 		private int _numIterations = 0;
 		[SerializeField, Min(0.01f)]
@@ -59,60 +56,60 @@ namespace TRUEStudios.Tweens
 		#endregion
 
 		#region Properties
-		public int iterationsLeft { private set; get; }
-		public bool playForward { get { return _playForward; } }
-		public UnityEvent onPlay { get { return _onPlay; } }
-		public UnityEvent onFinish { get { return _onFinish; } }
-		public UnityEvent onIterate { get { return _onIterate; } }
-		public TweenEvent onUpdate { get { return _onUpdate; } }
-		public TweenEvent onProgress { get { return _onProgress; } }
+		public int IterationsLeft { private set; get; }
+		public bool IsPlayingForward { get { return _playingForward; } }
+		public UnityEvent OnPlay { get { return _onPlay; } }
+		public UnityEvent OnFinish { get { return _onFinish; } }
+		public UnityEvent OnIterate { get { return _onIterate; } }
+		public TweenEvent OnUpdate { get { return _onUpdate; } }
+		public TweenEvent OnProgress { get { return _onProgress; } }
 
-		public float distributedValue {
+		public float DistributedValue {
 			get {
 				return _distributionCurve.Evaluate(_factor);
 			}
 		}
 
-		public Transform targetTransform {
+		public Transform TargetTransform {
 			get {
 				return (_target != null) ? _target.transform : transform;
 			}
 		}
 
-		public GameObject target {
+		public GameObject Target {
 			set { _target = value; }
 			get { return _target; }
 		}
 		
-		public PlaybackMode loopMode {
+		public PlaybackMode LoopMode {
 			set { _loopMode = value; }
 			get { return _loopMode; }
 		}
 
-		public PlaybackState state {
+		public PlaybackState State {
 			set { _state = value; }
 			get { return _state; }
 		}
 
-		public int numIterations {
+		public int NumIterations {
 			set { _numIterations = Mathf.Max(0, value); }
 			get { return _numIterations; }
 		}
 
-		public float duration {
+		public float Duration {
 			set { _duration = Mathf.Max(Mathf.Epsilon, value); }
 			get { return _duration; }
 		}
 
-		public float delay {
+		public float Delay {
 			set { _delay = Mathf.Max(0.0f, value); }
 			get { return _delay; }
 		}
 
-		public float factor {
+		public float Factor {
 			set {
 				_factor = Mathf.Clamp01(value);
-				_currentTime = duration * _factor;
+				_currentTime = Duration * _factor;
 				UpdateTween();
 			}
 
@@ -121,11 +118,11 @@ namespace TRUEStudios.Tweens
 		#endregion
 
 		#region MonoBehaviour Hooks
-		protected virtual void Awake()
-		{
+		protected virtual void Awake () {
 			// set the target to self if not set in the Inspector
-			if (_target == null)
+			if (_target == null) {
 				_target = gameObject;
+			}
 
 			// apply tween changes as desired
 			switch (_awakeTarget)
@@ -140,95 +137,85 @@ namespace TRUEStudios.Tweens
 			}
 
 			// start playing if set to play, but not already running
-			if (_state == PlaybackState.Playing)
-				Play(_playForward);
+			if (_state == PlaybackState.Playing) {
+				Play(_playingForward);
+			}
 		}
 
-		protected virtual void OnDestroy()
-		{
+		protected virtual void OnDestroy () {
 			InvalidateRoutine();
 		}
 		#endregion
 
 		#region Virtual Methods
-		public virtual void ApplyResult() { }
-		public virtual void Swap() { }
+		public virtual void ApplyResult () { }
+		public virtual void Swap () { }
 		#endregion
 
 		#region Actions
-		public void PlayForward(bool reset = false)
-		{
+		public void PlayForward (bool reset = false) {
 			Play(true, reset);
 		}
 
-		public void PlayReverse(bool reset = false)
-		{
+		public void PlayReverse (bool reset = false) {
 			Play(false, reset);
 		}
 
-		public Coroutine Play(bool forward = true, bool reset = false)
-		{
+		public Coroutine Play (bool forward = true, bool reset = false) {
 			// cancel any running coroutine
 			InvalidateRoutine();
 
 			// handle reset logic
-			_playForward = forward;
-			if (reset)
-			{
-				if (_playForward)
+			_playingForward = forward;
+			if (reset) {
+				if (_playingForward) {
 					ResetToBegin();
-				else
+				} else {
 					ResetToEnd();
+				}
 			}
 
 			// begin playing
-			iterationsLeft = numIterations;
+			IterationsLeft = NumIterations;
 			_processRoutine = StartCoroutine(Process());
 			return _processRoutine;
 		}
 
-		public void Increment()
-		{
+		public void Increment () {
 			PerformIncrement();
 		}
 
-		public void ResetToBegin()
-		{
+		public void ResetToBegin () {
 			_currentTime = 0.0f;
 			UpdateTween();
 		}
 
-		public void ResetToEnd()
-		{
-			_currentTime = duration;
+		public void ResetToEnd () {
+			_currentTime = Duration;
 			UpdateTween();
 		}
 
-		public void Stop()
-		{
+		public void Stop () {
 			InvalidateRoutine();
 			_state = PlaybackState.Stopped;
 		}
 		#endregion
 
 		#region Process Tweens
-		protected void UpdateTween()
-		{
+		protected void UpdateTween () {
 			// update, evaluate and raise event
-			_factor = _currentTime / duration;
-			_onUpdate.Invoke(distributedValue);
+			_factor = _currentTime / Duration;
+			_onUpdate.Invoke(DistributedValue);
 			_onProgress.Invoke(_factor);
 			ApplyResult();
 		}
 
-		private bool PerformIncrement()
-		{
+		private bool PerformIncrement () {
 			bool finish = false;
-			_currentTime += playForward ? Time.deltaTime : -Time.deltaTime; // offset time based on playback direction
+			_currentTime += IsPlayingForward ? Time.deltaTime : -Time.deltaTime; // offset time based on playback direction
 
 			// handle end of the loop
-			switch (_loopMode)
-			{
+			switch (_loopMode) {
 				case PlaybackMode.Once:
 					finish = PerformIncrementOnce();
 					break;
@@ -247,95 +234,88 @@ namespace TRUEStudios.Tweens
 			return finish;
 		}
 
-		private bool PerformIncrementOnce()
-		{
-			_currentTime = Mathf.Clamp(_currentTime, 0.0f, duration);
-			if (_playForward)
-				return (_currentTime == duration);
-			else
+		private bool PerformIncrementOnce () {
+			_currentTime = Mathf.Clamp(_currentTime, 0.0f, Duration);
+			if (_playingForward) {
+				return (_currentTime == Duration);
+			} else {
 				return (_currentTime == 0.0f) ;
+			}
 		}
 
-		private bool PerformIncrementLooping()
-		{
+		private bool PerformIncrementLooping () {
 			bool finish = false;
 
-			if (_playForward)
-			{
-				if (_currentTime > duration)
-				{
+			if (_playingForward) {
+				if (_currentTime > Duration) {
 					finish = Iterate();
-					if (finish)
-						_currentTime = duration;
-					else
-						_currentTime -= duration;
+					if (finish) {
+						_currentTime = Duration;
+					} else {
+						_currentTime -= Duration;
+					}
 				}
 			} else {
-				if (_currentTime < 0.0f)
-				{
+				if (_currentTime < 0.0f) {
 					finish = Iterate();
-					if (finish)
+					if (finish) {
 						_currentTime = 0.0f;
-					else
-						_currentTime += duration;
+					} else {
+						_currentTime += Duration;
+					}
 				}
 			}
 
 			return finish;
 		}
 
-		private bool PerformIncrementPingPong()
-		{
+		private bool PerformIncrementPingPong () {
 			bool finish = false;
 
-			if (_playForward)
-			{
-				if (_currentTime >= duration)
-				{
+			if (_playingForward) {
+				if (_currentTime >= Duration) {
 					finish = Iterate();
-					if (finish)
-						_currentTime = duration;
-					else
-						_currentTime = duration - (_currentTime - duration);
-					_playForward = false;
+					if (finish) {
+						_currentTime = Duration;
+					} else {
+						_currentTime = Duration - (_currentTime - Duration);
+					}
+
+					_playingForward = false;
 				}
 			} else {
-				if (_currentTime <= 0.0f)
-				{
+				if (_currentTime <= 0.0f) {
 					finish = Iterate();
-					if (finish)
+					if (finish) {
 						_currentTime = 0.0f;
-					else
+					} else {
 						_currentTime = -_currentTime;
-					_playForward = true;
+					}
+
+					_playingForward = true;
 				}
 			}
 
 			return finish;
 		}
 
-		private bool Iterate()
-		{
+		private bool Iterate () {
 			_onIterate.Invoke();
-			return (numIterations > 0 && (--iterationsLeft == 0)); // loop indefinitely if numIterations is zero
+			return (NumIterations > 0 && (--IterationsLeft == 0)); // loop indefinitely if numIterations is zero
 		}
 
-		private void InvalidateRoutine()
-		{
-			if (_processRoutine != null)
-			{
+		private void InvalidateRoutine () {
+			if (_processRoutine != null) {
 				StopCoroutine(_processRoutine);
 				_processRoutine = null;
 			}
 		}
 
-		private IEnumerator Process()
-		{
+		private IEnumerator Process () {
 			float delayTime = 0.0f;
 
 			// run the delay upon playing
-			while (delayTime < _delay)
-			{
+			while (delayTime < _delay) {
 				delayTime += Time.deltaTime;
 				yield return null;
 			}
@@ -345,10 +325,12 @@ namespace TRUEStudios.Tweens
 			_onPlay.Invoke();
 
 			// process the update loop
-			while (true)
-			{
+			while (true) {
 				// auto-increment based on elapsed time between frames, and break when deemed "finished"
-				if (PerformIncrement()) break;
+				if (PerformIncrement()) {
+					break;
+				}
+				
 				yield return null;
 			}
 
@@ -360,9 +342,7 @@ namespace TRUEStudios.Tweens
 		#endregion
 	}
 
-	public abstract class Tween<T> : Tween
-		where T : new()
-	{
+	public abstract class Tween<T> : Tween where T : new() {
 		#region Fields
 		[SerializeField]
 		protected T _begin;
@@ -396,19 +376,17 @@ namespace TRUEStudios.Tweens
 		#endregion
 
 		#region Virtual Methods
-		protected virtual void BeginWillBeSet(T to) { }
-		protected virtual void EndWillBeSet(T to) { }
+		protected virtual void BeginWillBeSet (T to) { }
+		protected virtual void EndWillBeSet (T to) { }
 		#endregion
 
 		#region Methods
-		protected override void Awake()
-		{
+		protected override void Awake () {
 			base.Awake();
-			onUpdate.AddListener(delegate { ApplyResult(); });
+			OnUpdate.AddListener(delegate { ApplyResult(); });
 		}
 
-		public override void Swap()
-		{
+		public override void Swap () {
 			T temp = begin;
 			begin = end;
 			end = temp;

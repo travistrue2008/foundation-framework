@@ -9,12 +9,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-
-namespace TRUEStudios.Action
-{
+namespace TRUEStudios.Action {
 	[RequireComponent(typeof(Image))]
-	public class ButtonSpriteSwapAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
-	{
+	public class ButtonSpriteSwapAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler {
 		#region Fields
 		[SerializeField]
 		private bool _useNativeSize = true;
@@ -31,42 +28,38 @@ namespace TRUEStudios.Action
 		#endregion
 
 		#region Methods
-		private void Awake()
-		{
+		private void Awake () {
 			// get the Image component, and make sure _normalSprite is assigned
 			_image = GetComponent<Image>();
-			if (_normalSprite == null)
+			if (_normalSprite == null) {
 				throw new Exception("_normalSprite not assigned in the Inspector.");
+			}
 		}
 
-		private void ApplySprite()
-		{
+		private void ApplySprite () {
 			// set the sprite, and reset its size
 			_image.sprite = _entered ? (_down ? _downSprite : _hoverSprite) : _normalSprite;
-			if (_useNativeSize)
+			if (_useNativeSize) {
 				_image.SetNativeSize();
+			}
 		}
 
-		public void OnPointerEnter(PointerEventData eventData)
-		{
+		public void OnPointerEnter (PointerEventData eventData) {
 			_entered = true;
 			ApplySprite();
 		}
 
-		public void OnPointerExit(PointerEventData eventData)
-		{
+		public void OnPointerExit (PointerEventData eventData) {
 			_entered = false;
 			ApplySprite();
 		}
 
-		public void OnPointerDown(PointerEventData eventData)
-		{
+		public void OnPointerDown (PointerEventData eventData) {
 			_down = true;
 			ApplySprite();
 		}
 
-		public void OnPointerUp(PointerEventData eventData)
-		{
+		public void OnPointerUp (PointerEventData eventData) {
 			_down = false;
 			ApplySprite();
 		}

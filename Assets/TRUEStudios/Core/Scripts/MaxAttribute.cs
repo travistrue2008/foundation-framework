@@ -7,16 +7,12 @@
 using System;
 using UnityEngine;
 
-
-namespace TRUEStudios.Core
-{
+namespace TRUEStudios.Core {
 	[AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
-	public class MaxAttribute : PropertyAttribute
-	{
+	public class MaxAttribute : PropertyAttribute {
 		public readonly float max;
 
-		public MaxAttribute(float max)
-		{
+		public MaxAttribute (float max) {
 			this.max = max;
 		}
 	}

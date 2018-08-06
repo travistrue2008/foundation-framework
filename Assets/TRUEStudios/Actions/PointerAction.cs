@@ -9,14 +9,11 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-
-namespace TRUEStudios.Action
-{
+namespace TRUEStudios.Action {
 	[Serializable]
 	public class PointerActionEvent : UnityEvent<Vector2> { }
 
-	public class PointerAction : MonoBehaviour, IPointerUpHandler, IPointerDownHandler, IPointerClickHandler
-	{
+	public class PointerAction : MonoBehaviour, IPointerUpHandler, IPointerDownHandler, IPointerClickHandler {
 		#region Fields
 		[SerializeField]
 		private PointerActionEvent _onUp = new PointerActionEvent();
@@ -29,29 +26,27 @@ namespace TRUEStudios.Action
 		#endregion
 
 		#region Properties
-		public PointerActionEvent onUp { get { return _onUp; } }
-		public PointerActionEvent onDown { get { return _onDown; } }
-		public PointerActionEvent onClick { get { return _onClick; } }
+		public PointerActionEvent OnUp { get { return _onUp; } }
+		public PointerActionEvent OnDown { get { return _onDown; } }
+		public PointerActionEvent OnClick { get { return _onClick; } }
 		#endregion
 
 		#region Methods
-		public void OnPointerUp(PointerEventData eventData)
-		{
+		public void OnPointerUp (PointerEventData eventData) {
 			Vector2 diff = eventData.position - _downPos;
-			if (diff.sqrMagnitude > Mathf.Epsilon)
+			if (diff.sqrMagnitude > Mathf.Epsilon) {
 				_onUp.Invoke(Input.mousePosition);
-			else
+			} else {
 				_onClick.Invoke(Input.mousePosition);
+			}
 		}
 
-		public void OnPointerDown(PointerEventData eventData)
-		{
+		public void OnPointerDown (PointerEventData eventData) {
 			_downPos = Input.mousePosition;
 			_onDown.Invoke(Input.mousePosition);
 		}
 
-		public void OnPointerClick(PointerEventData e)
-		{
+		public void OnPointerClick (PointerEventData e) {
 			_onClick.Invoke(e.position);
 		}
 		#endregion

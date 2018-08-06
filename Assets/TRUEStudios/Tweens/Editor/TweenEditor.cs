@@ -9,13 +9,9 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-
-namespace TRUEStudios.Tweens
-{
+namespace TRUEStudios.Tweens {
 	[CustomEditor(typeof(Tween)), CanEditMultipleObjects]
-	public class TweenEditor<T> : Editor
-	where T : Tween
-	{
+	public class TweenEditor<T> : Editor where T : Tween {
 		#region Fields
 		private SerializedProperty _awakeTargetProperty;
 		private SerializedProperty _targetProperty;
@@ -40,22 +36,21 @@ namespace TRUEStudios.Tweens
 		#endregion
 
 		#region Properties
-		public bool enableTargetField { protected set; get; }
-		public bool provideCustomFields { protected set; get; }
-		public T reference { get { return target as T; } }
-		public SerializedProperty beginProperty { get { return _beginProperty; } }
-		public SerializedProperty endProperty { get { return _endProperty; } }
+		public bool EnableTargetField { protected set; get; }
+		public bool ProvideCustomFields { protected set; get; }
+		public T Reference { get { return target as T; } }
+		public SerializedProperty BeginProperty { get { return _beginProperty; } }
+		public SerializedProperty EndProperty { get { return _endProperty; } }
 		#endregion
 
 		#region Virtual Methods
-		protected virtual void DrawAdditionalFields() { }
-		protected virtual void DrawCustomBeginField() { }
-		protected virtual void DrawCustomEndField() { }
+		protected virtual void DrawAdditionalFields () { }
+		protected virtual void DrawCustomBeginField () { }
+		protected virtual void DrawCustomEndField () { }
 		#endregion
 
 		#region Editor Hooks
-		protected virtual void OnEnable()
-		{
+		protected virtual void OnEnable () {
 			_awakeTargetProperty = serializedObject.FindProperty("_awakeTarget");
 			_targetProperty = serializedObject.FindProperty("_target");
 
@@ -78,132 +73,124 @@ namespace TRUEStudios.Tweens
 			_onUpdateProperty = serializedObject.FindProperty("_onUpdate");
 		}
 
-		protected virtual void OnDisable()
-		{
+		protected virtual void OnDisable () {
 			// return to the cached value if not currently playing
-			if (!Application.isPlaying)
-			{
-				foreach (Object target in targets)
-					(target as T).factor = 0.0f;
+			if (!Application.isPlaying) {
+				foreach (Object target in targets) {
+					(target as T).Factor = 0.0f;
+				}
 			}
 		}
 
-		public override void OnInspectorGUI()
-		{
+		public override void OnInspectorGUI () {
 			// update the serialized object
 			serializedObject.Update();
 			EditorGUILayout.BeginVertical();
-			{
-				// draws additional fields defined by subclass
-				DrawAdditionalFields();
-				EditorGUILayout.Space();
 
-				// draw properties
-				DrawTargetProperties();
-				DrawStateProperties();
-				DrawLoopProperties();
-				DrawDurationProperties();
-				DrawAnimationProperties();
-				DrawResetButtons();
-				DrawEventProperties();
-			}
+			// draws additional fields defined by subclass
+			DrawAdditionalFields();
+			EditorGUILayout.Space();
+
+			// draw properties
+			DrawTargetProperties();
+			DrawStateProperties();
+			DrawLoopProperties();
+			DrawDurationProperties();
+			DrawAnimationProperties();
+			DrawResetButtons();
+			DrawEventProperties();
+
 			EditorGUILayout.EndVertical();
 			serializedObject.ApplyModifiedProperties();
 		}
 		#endregion
 
 		#region Draw Methods
-		private void DrawTargetProperties()
+		private void DrawTargetProperties ()
 		{
 			// set the initial target (begin or end), and target GameObject if available
 			EditorGUILayout.PropertyField(_awakeTargetProperty);
-			if (enableTargetField)
+			if (EnableTargetField) {
 				EditorGUILayout.PropertyField(_targetProperty);
+			}
 		}
 
-		private void DrawStateProperties()
-		{
+		private void DrawStateProperties () {
 			// display state
 			EditorGUILayout.PropertyField(_stateProperty);
 			EditorGUILayout.PropertyField(_playForwardProperty);
 			EditorGUILayout.Space();
 		}
 
-		private void DrawLoopProperties()
-		{
+		private void DrawLoopProperties () {
 			// display loop
 			EditorGUILayout.PropertyField(_loopModeProperty);
 			EditorGUILayout.PropertyField(_numIterationsProperty);
 			EditorGUILayout.Space();
 		}
 
-		private void DrawDurationProperties()
-		{
+		private void DrawDurationProperties () {
 			// display duration and delay
 			EditorGUILayout.PropertyField(_durationProperty);
 			EditorGUILayout.PropertyField(_delayProperty);
 			EditorGUILayout.Space();
 		}
 
-		private void DrawAnimationProperties()
-		{
+		private void DrawAnimationProperties () {
 			// check if the subclass should draw the begin and end fields
-			if (provideCustomFields)
-			{
+			if (ProvideCustomFields) {
 				DrawCustomBeginField();
 				DrawCustomEndField();
 			} else {
 				// draw default fields
-				EditorGUILayout.PropertyField(beginProperty);
-				EditorGUILayout.PropertyField(endProperty);
+				EditorGUILayout.PropertyField(BeginProperty);
+				EditorGUILayout.PropertyField(EndProperty);
 			}
 
 			// display the distribution curve, and interpolation
 			EditorGUILayout.PropertyField(_distributionCurveProperty);
-			float factor = EditorGUILayout.Slider("Interpolation", reference.factor, 0.0f, 1.0f);
-			if (factor != reference.factor)
-			{
+			float factor = EditorGUILayout.Slider("Interpolation", Reference.Factor, 0.0f, 1.0f);
+			if (factor != Reference.Factor) {
 				// only update Factor, if a change has occurred
-				foreach (Object target in targets)
-					(target as T).factor = factor;
+				foreach (Object target in targets) {
+					(target as T).Factor = factor;
+				}
 			}
 
-			reference.ApplyResult();
+			Reference.ApplyResult();
 		}
 
-		private void DrawResetButtons()
-		{
+		private void DrawResetButtons () {
 			// convenience buttons
 			EditorGUILayout.BeginHorizontal();
-			{
-				if (GUILayout.Button("To Begin"))
-				{
-					foreach (Object target in targets)
-						(target as T).ResetToBegin();
-				}
 
-				if (GUILayout.Button("To End"))
-				{
-					foreach (Object target in targets)
-						(target as T).ResetToEnd();
-				}
-
-				// check if the swap button was pressed
-				EditorGUI.BeginChangeCheck();
-				GUILayout.Button("Swap");
-				if (EditorGUI.EndChangeCheck())
-				{
-					Undo.RecordObjects(targets, "Swap Begin and End");
-					foreach (Object target in targets)
-						(target as T).Swap();
+			if (GUILayout.Button("To Begin")) {
+				foreach (Object target in targets) {
+					(target as T).ResetToBegin();
 				}
 			}
+
+			if (GUILayout.Button("To End")) {
+				foreach (Object target in targets) {
+					(target as T).ResetToEnd();
+				}
+			}
+
+			// check if the swap button was pressed
+			EditorGUI.BeginChangeCheck();
+			GUILayout.Button("Swap");
+			if (EditorGUI.EndChangeCheck()) {
+				Undo.RecordObjects(targets, "Swap Begin and End");
+				foreach (Object target in targets) {
+					(target as T).Swap();
+				}
+			}
+			
 			EditorGUILayout.EndHorizontal();
 			EditorGUILayout.Space();
 		}
 
-		private void DrawEventProperties()
-		{
+		private void DrawEventProperties () {
 			// display UnityEvent properties
 			EditorGUILayout.PropertyField(_onPlayProperty);
 			EditorGUILayout.PropertyField(_onFinishProperty);
