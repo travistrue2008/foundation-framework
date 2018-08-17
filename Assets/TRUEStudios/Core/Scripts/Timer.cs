@@ -19,7 +19,7 @@ namespace TRUEStudios.Core {
 		private bool _playOnAwake;
 		[SerializeField]
 		private bool _looping;
-		[SerializeField, Min(0.01f)]
+		[SerializeField]
 		private float _duration = 1.0f;
 		[SerializeField]
 		private UnityEvent _onPlay = new UnityEvent();
@@ -71,6 +71,10 @@ namespace TRUEStudios.Core {
 			if (_playOnAwake) {
 				Play();
 			}
+		}
+
+		private void OnValidate () {
+			_duration = Mathf.Max(Mathf.Epsilon, _duration);
 		}
 
 		private IEnumerator ProcessTimer (float delay) {

@@ -29,11 +29,11 @@ namespace TRUEStudios.Tweens {
 		private PlaybackState _state = PlaybackState.Stopped;
 		[SerializeField]
 		private bool _playingForward = true;
-		[SerializeField, Min(0)]
+		[SerializeField]
 		private int _numIterations = 0;
-		[SerializeField, Min(0.01f)]
+		[SerializeField]
 		private float _duration = 1.0f;
-		[SerializeField, Min(0.0f)]
+		[SerializeField]
 		private float _delay = 0.0f;
 		[SerializeField]
 		private GameObject _target;
@@ -144,6 +144,12 @@ namespace TRUEStudios.Tweens {
 
 		protected virtual void OnDestroy () {
 			InvalidateRoutine();
+		}
+
+		private void OnValidate () {
+			NumIterations = _numIterations;
+			Duration = _duration;
+			Delay = _delay;
 		}
 		#endregion
 

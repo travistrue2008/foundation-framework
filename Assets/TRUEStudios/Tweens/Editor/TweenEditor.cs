@@ -17,7 +17,7 @@ namespace TRUEStudios.Tweens {
 		private SerializedProperty _targetProperty;
 
 		private SerializedProperty _stateProperty;
-		private SerializedProperty _playForwardProperty;
+		private SerializedProperty _playingForwardProperty;
 
 		private SerializedProperty _loopModeProperty;
 		private SerializedProperty _numIterationsProperty;
@@ -55,7 +55,7 @@ namespace TRUEStudios.Tweens {
 			_targetProperty = serializedObject.FindProperty("_target");
 
 			_stateProperty = serializedObject.FindProperty("_state");
-			_playForwardProperty = serializedObject.FindProperty("_playForward");
+			_playingForwardProperty = serializedObject.FindProperty("_playingForward");
 
 			_loopModeProperty = serializedObject.FindProperty("_loopMode");
 			_numIterationsProperty = serializedObject.FindProperty("_numIterations");
@@ -118,7 +118,7 @@ namespace TRUEStudios.Tweens {
 		private void DrawStateProperties () {
 			// display state
 			EditorGUILayout.PropertyField(_stateProperty);
-			EditorGUILayout.PropertyField(_playForwardProperty);
+			EditorGUILayout.PropertyField(_playingForwardProperty);
 			EditorGUILayout.Space();
 		}
 
