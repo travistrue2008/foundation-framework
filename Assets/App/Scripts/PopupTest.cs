@@ -13,7 +13,7 @@ namespace TRUEStudios.State.Tests {
 		#endregion
 
 		#region Methods
-		private void Awake () {
+		private void Start () {
 			RunInstantTest(10);
 			RunFrameDelayTest(10);
 			RunFullDelayTest(10);

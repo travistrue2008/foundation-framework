@@ -197,28 +197,5 @@ namespace TRUEStudios.State {
 			content += "----------------------------";
 		}
 		#endregion
-
-		#region Menu Items
-		#if UNITY_EDITOR
-		[MenuItem("Tools/Game/Clear Preferences")]
-		public static void ClearPreferences () {
-			PlayerPrefs.DeleteAll();
-			PlayerPrefs.Save();
-		}
-
-		[MenuItem("Tools/Game/Screenshot")]
-		public static void TakeScreenshot () {
-			const string SubDirectory = "Screenshots";
-			if (!Directory.Exists(SubDirectory)) {
-				Directory.CreateDirectory(SubDirectory);
-			}
-
-			// generate the timestamp, and take the screenshot
-			var timestamp = DateTime.UtcNow.ToString("yyyyMMddHHmmss");
-			ScreenCapture.CaptureScreenshot($"Screenshots/{timestamp}.png");
-			Debug.Log("Screenshot saved");
-		}
-		#endif
-		#endregion
 	}
 }
