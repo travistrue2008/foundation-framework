@@ -66,7 +66,7 @@ namespace TRUEStudios.State.Tests {
 			}
 
 			// destroy popups
-			while (Services.Get<PopupService>().currentPopup != null) {
+			while (Services.Get<PopupService>().CurrentPopup != null) {
 				Services.Get<PopupService>().PopPopup();
 				yield return null;
 			}
@@ -82,7 +82,7 @@ namespace TRUEStudios.State.Tests {
 			}
 
 			// destroy popups
-			while (Services.Get<PopupService>().currentPopup != null) {
+			while (Services.Get<PopupService>().CurrentPopup != null) {
 				Services.Get<PopupService>().PopPopup();
 				while (Services.Get<PopupService>().IsTransitioning) {
 					yield return null;
