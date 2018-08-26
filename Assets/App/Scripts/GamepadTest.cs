@@ -25,11 +25,11 @@ public class GamepadTest : MonoBehaviour {
 
 	#region Actions
 	public void PrintPressedButton (int channel, Button button) {
-		Debug.Log($"PRESSED: Gamepad[{channel}] for button: {button}");
+		Debug.Log($"PRESSED: Gamepad {channel} for button: {button}");
 	}
 
 	public void PrintReleasedButton (int channel, Button button) {
-		Debug.Log($"RELEASED: Gamepad[{channel}] for button: {button}");
+		Debug.Log($"RELEASED: Gamepad {channel} for button: {button}");
 	}
 	#endregion
 }

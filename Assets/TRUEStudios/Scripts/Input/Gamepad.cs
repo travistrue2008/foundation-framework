@@ -30,47 +30,32 @@ namespace TRUEStudios.Input {
 
 	[CreateAssetMenu(menuName = "TRUEStudios/Input/Gamepad", fileName = "New Gamepad")]
 	public class Gamepad : ScriptableObject {
+		#region Constants
+		private const string AKey = "button_a";
+		private const string BKey = "button_b";
+		private const string XKey = "button_x";
+		private const string YKey = "button_y";
+		private const string BackKey = "button_back";
+		private const string StartKey = "button_start";
+		private const string LeftBumperKey = "bumper_left";
+		private const string RightBumperKey = "bumper_right";
+		private const string LeftThumbstickKey = "thumbstick_left";
+		private const string RightThumbstickKey = "thumbstick_right";
+		private const string LeftTriggerKey = "trigger_left";
+		private const string RightTriggerKey = "trigger_right";
+		private const string DpadHorizontalKey = "dpad_horizontal";
+		private const string DpadVerticalKey = "dpad_vertical";
+		private const string LeftXKey = "left_x";
+		private const string LeftYKey = "left_y";
+		private const string RightXKey = "right_x";
+		private const string RightYKey = "right_y";
+
 		private readonly Button[] Buttons = (Button[])Enum.GetValues(typeof(Button));
+		#endregion
 
 		#region Fields
 		[SerializeField]
-		private int _channel = 0;
-		[SerializeField]
-		private string _aKey = "button_a";
-		[SerializeField]
-		private string _bKey = "button_b";
-		[SerializeField]
-		private string _xKey = "button_x";
-		[SerializeField]
-		private string _yKey = "button_y";
-		[SerializeField]
-		private string _backKey = "button_back";
-		[SerializeField]
-		private string _startKey = "button_start";
-		[SerializeField]
-		private string _leftBumperKey = "bumper_left";
-		[SerializeField]
-		private string _rightBumperKey = "bumper_right";
-		[SerializeField]
-		private string _leftThumbstickKey = "thumbstick_left";
-		[SerializeField]
-		private string _rightThumbstickKey = "thumbstick_right";
-		[SerializeField]
-		private string _leftTriggerKey = "trigger_left";
-		[SerializeField]
-		private string _rightTriggerKey = "trigger_right";
-		[SerializeField]
-		private string _dpadHorizontalKey = "dpad_horizontal";
-		[SerializeField]
-		private string _dpadVerticalKey = "dpad_vertical";
-		[SerializeField]
-		private string _leftXKey = "left_x";
-		[SerializeField]
-		private string _leftYKey = "left_y";
-		[SerializeField]
-		private string _rightXKey = "right_x";
-		[SerializeField]
-		private string _rightYKey = "right_y";
+		private int _channel = 1;
 		[SerializeField]
 		private GamepadEvent _onButtonPressed = new GamepadEvent();
 		[SerializeField]
@@ -86,6 +71,14 @@ namespace TRUEStudios.Input {
 		private Vector2 _leftAxis = Vector2.zero;
 		private Vector2 _rightAxis = Vector2.zero;
 		private GameObject _target;
+
+		#if UNITY_OSX || UNITY_EDITOR_OSX
+		[NonSerialized]
+		private bool _leftTriggerTouched = false;
+		[NonSerialized]
+		private bool _rightTriggerTouched = false;
+		#endif
+		
 		#endregion
 
 		#region Properties
@@ -94,33 +87,149 @@ namespace TRUEStudios.Input {
 		public string DebugText { get { return _debugText; } }
 		public GamepadEvent OnButtonPressed { get { return _onButtonPressed; } }
 		public GamepadEvent OnButtonReleased { get { return _onButtonReleased; } }
-		public bool A { get { return UnityEngine.Input.GetButton(_aKey); } }
-		public bool B { get { return UnityEngine.Input.GetButton(_bKey); } }
-		public bool X { get { return UnityEngine.Input.GetButton(_xKey); } }
-		public bool Y { get { return UnityEngine.Input.GetButton(_yKey); } }
-		public bool Up { get { return UnityEngine.Input.GetAxis(_dpadVerticalKey) > 0.5f; } }
-		public bool Down { get { return UnityEngine.Input.GetAxis(_dpadVerticalKey) < -0.5f; } }
-		public bool Left { get { return UnityEngine.Input.GetAxis(_dpadHorizontalKey) < -0.5f; } }
-		public bool Right { get { return UnityEngine.Input.GetAxis(_dpadHorizontalKey) > 0.5f; } }
-		public bool Back { get { return UnityEngine.Input.GetButton(_backKey); } }
-		public bool Start { get { return UnityEngine.Input.GetButton(_startKey); } }
-		public bool LeftBumper { get { return UnityEngine.Input.GetButton(_leftBumperKey); } }
-		public bool RightBumper { get { return UnityEngine.Input.GetButton(_rightBumperKey); } }
-		public bool LeftThumbstick { get { return UnityEngine.Input.GetButton(_leftThumbstickKey); } }
-		public bool RightThumbstick { get { return UnityEngine.Input.GetButton(_rightThumbstickKey); } }
-		public float LeftTrigger { get { return UnityEngine.Input.GetAxis(_leftTriggerKey); } }
-		public float RightTrigger { get { return UnityEngine.Input.GetAxis(_rightTriggerKey); } }
+
+		public bool A {
+			get {
+				string key = GetFullKey(AKey);
+				return UnityEngine.Input.GetButton(key);
+			}
+		}
+		
+		public bool B {
+			get {
+				string key = GetFullKey(BKey);
+				return UnityEngine.Input.GetButton(key);
+			}
+		}
+		
+		public bool X {
+			get {
+				string key = GetFullKey(XKey);
+				return UnityEngine.Input.GetButton(key);
+			}
+		}
+		
+		public bool Y {
+			get {
+				string key = GetFullKey(YKey);
+				return UnityEngine.Input.GetButton(key);
+			}
+		}
+		
+		public bool Up {
+			get {
+				string key = GetFullKey(DpadVerticalKey);
+				return UnityEngine.Input.GetAxis(key) > 0.5f;
+			}
+		}
+		
+		public bool Down {
+			get {
+				string key = GetFullKey(DpadVerticalKey);
+				return UnityEngine.Input.GetAxis(key) < -0.5f;
+			}
+		}
+		
+		public bool Left {
+			get {
+				string key = GetFullKey(DpadHorizontalKey);
+				return UnityEngine.Input.GetAxis(key) < -0.5f;
+			}
+		}
+		
+		public bool Right {
+			get {
+				string key = GetFullKey(DpadHorizontalKey);
+				return UnityEngine.Input.GetAxis(key) > 0.5f;
+			}
+		}
+		
+		public bool Back {
+			get {
+				string key = GetFullKey(BackKey);
+				return UnityEngine.Input.GetButton(key);
+			}
+		}
+		
+		public bool Start {
+			get {
+				string key = GetFullKey(StartKey);
+				return UnityEngine.Input.GetButton(key);
+			}
+		}
+		
+		public bool LeftBumper {
+			get {
+				string key = GetFullKey(LeftBumperKey);
+				return UnityEngine.Input.GetButton(key);
+			}
+		}
+		
+		public bool RightBumper {
+			get {
+				string key = GetFullKey(RightBumperKey);
+				return UnityEngine.Input.GetButton(key);
+			}
+		}
+		
+		public bool LeftThumbstick {
+			get {
+				string key = GetFullKey(LeftThumbstickKey);
+				return UnityEngine.Input.GetButton(key);
+			}
+		}
+		
+		public bool RightThumbstick {
+			get {
+				string key = GetFullKey(RightThumbstickKey);
+				return UnityEngine.Input.GetButton(key);
+			}
+		}
+		
+		public float LeftTrigger {
+			get {
+				string key = GetFullKey(LeftTriggerKey);
+				if (UnityEngine.Input.GetAxis(key) != 0.0f) {
+					_leftTriggerTouched = true;
+				}
+
+				#if UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
+				return _leftTriggerTouched ? ((UnityEngine.Input.GetAxis(key) + 1.0f) * 0.5f) : 0.0f;
+				#else
+				return UnityEngine.Input.GetAxis(key);
+				#endif
+			}
+		}
+		
+		public float RightTrigger {
+			get {
+				string key = GetFullKey(RightTriggerKey);
+				if (UnityEngine.Input.GetAxis(key) != 0.0f) {
+					_rightTriggerTouched = true;
+				}
+
+				#if UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
+				return _rightTriggerTouched ? ((UnityEngine.Input.GetAxis(key) + 1.0f) * 0.5f) : 0.0f;
+				#else
+				return UnityEngine.Input.GetAxis(key);
+				#endif
+			}
+		}
 
 		public Vector2 LeftAxis {
 			get {
-				_leftAxis.Set(UnityEngine.Input.GetAxis(_leftXKey), UnityEngine.Input.GetAxis(_leftYKey));
+				string xKey = GetFullKey(LeftXKey);
+				string yKey = GetFullKey(LeftYKey);
+				_leftAxis.Set(UnityEngine.Input.GetAxis(xKey), UnityEngine.Input.GetAxis(yKey));
 				return _leftAxis;
 			}
 		}
 
 		public Vector2 RightAxis {
 			get {
-				_rightAxis.Set(UnityEngine.Input.GetAxis(_rightXKey), UnityEngine.Input.GetAxis(_rightYKey));
+				string xKey = GetFullKey(RightXKey);
+				string yKey = GetFullKey(RightYKey);
+				_rightAxis.Set(UnityEngine.Input.GetAxis(xKey), UnityEngine.Input.GetAxis(yKey));
 				return _rightAxis;
 			}
 		}
@@ -200,6 +309,16 @@ namespace TRUEStudios.Input {
 			// update last up/down states
 			_lastUpPad = _upPad;
 			_lastDownPad = _downPad;
+		}
+
+		private string GetFullKey (string root) {
+			#if UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
+			string platform = "mac";
+			#else
+			string platform = "uni";
+			#endif
+
+			return $"{_channel}_{platform}_{root}";
 		}
 
 		private void PrintDebug () {
