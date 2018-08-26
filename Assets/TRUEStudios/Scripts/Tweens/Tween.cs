@@ -10,11 +10,10 @@ using UnityEngine;
 using UnityEngine.Events;
 
 using TRUEStudios.Core;
+using TRUEStudios.Events;
 
 namespace TRUEStudios.Tweens {
 	[Serializable]
-	public class TweenEvent : UnityEvent<float> { }
-
 	public class Tween : MonoBehaviour {
 		public enum AwakeTarget { Begin, End }
 		public enum PlaybackMode { Once, Looping, Pingpong }
@@ -46,9 +45,9 @@ namespace TRUEStudios.Tweens {
 		[SerializeField]
 		private UnityEvent _onIterate = new UnityEvent();
 		[SerializeField]
-		private TweenEvent _onUpdate = new TweenEvent();
+		private FloatEvent _onUpdate = new FloatEvent();
 		[SerializeField]
-		private TweenEvent _onProgress = new TweenEvent();
+		private FloatEvent _onProgress = new FloatEvent();
 
 		private float _factor = 0.0f;
 		private float _currentTime = 0.0f;
@@ -61,8 +60,8 @@ namespace TRUEStudios.Tweens {
 		public UnityEvent OnPlay { get { return _onPlay; } }
 		public UnityEvent OnFinish { get { return _onFinish; } }
 		public UnityEvent OnIterate { get { return _onIterate; } }
-		public TweenEvent OnUpdate { get { return _onUpdate; } }
-		public TweenEvent OnProgress { get { return _onProgress; } }
+		public FloatEvent OnUpdate { get { return _onUpdate; } }
+		public FloatEvent OnProgress { get { return _onProgress; } }
 
 		public float DistributedValue {
 			get {
