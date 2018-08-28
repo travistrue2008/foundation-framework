@@ -13,6 +13,7 @@ namespace TRUEStudios.Tweens {
 	[CustomEditor(typeof(RotationTween)), CanEditMultipleObjects]
 	public class RotationTweenEditor : TweenEditor<RotationTween> {
 		#region Fields
+		private Quaternion _cachedValue;
 		private SerializedProperty _xModeProperty;
 		private SerializedProperty _yModeProperty;
 		private SerializedProperty _zModeProperty;

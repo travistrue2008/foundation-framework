@@ -14,6 +14,7 @@ namespace TRUEStudios.Tweens {
 	[CustomEditor(typeof(AlphaTween)), CanEditMultipleObjects]
 	public class AlphaTweenEditor : TweenEditor<AlphaTween> {
 		#region Fields
+		private float _cachedValue;
 		private SerializedProperty _graphicProperty;
 		private SerializedProperty _spriteRendererProperty;
 		#endregion

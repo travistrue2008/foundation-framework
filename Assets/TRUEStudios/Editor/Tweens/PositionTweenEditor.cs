@@ -13,6 +13,7 @@ namespace TRUEStudios.Tweens {
 	[CustomEditor(typeof(PositionTween)), CanEditMultipleObjects]
 	public class PositionTweenEditor : TweenEditor<PositionTween> {
 		#region Fields
+		private Vector3 _cachedValue;
 		private SerializedProperty _coordinateSpaceProperty;
 		#endregion
 

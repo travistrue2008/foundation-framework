@@ -5,14 +5,10 @@
 ******************************************************************************/
 
 using UnityEngine;
+using TRUEStudios.Core;
 
 namespace TRUEStudios.Tweens {
-	public class PositionTween : Tween<Vector3> {
-		public enum CoordinateSpace {
-			Local,
-			Global,
-		}
-		
+	public class PositionTween : Tween<Vector3> {		
 		#region Fields
 		[SerializeField]
 		private CoordinateSpace _transformSpace = CoordinateSpace.Local;

@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace TRUEStudios.Tweens {
 	[CustomEditor(typeof(Tween)), CanEditMultipleObjects]
-	public class TweenEditor<T> : Editor where T : Tween {
+	public abstract class TweenEditor<T> : Editor where T : Tween {
 		#region Fields
 		private SerializedProperty _awakeTargetProperty;
 		private SerializedProperty _targetProperty;
@@ -151,17 +151,8 @@ namespace TRUEStudios.Tweens {
 				EditorGUILayout.PropertyField(EndProperty);
 			}
 
-			// display the distribution curve, and interpolation
+			// display the distribution curve
 			EditorGUILayout.PropertyField(_distributionCurveProperty);
-			float factor = EditorGUILayout.Slider("Interpolation", Reference.Factor, 0.0f, 1.0f);
-			if (factor != Reference.Factor) {
-				// only update Factor, if a change has occurred
-				foreach (Object target in targets) {
-					((T)target).Factor = factor;
-				}
-			}
-
-			Reference.ApplyResult();
 		}
 
 		private void DrawResetButtons () {

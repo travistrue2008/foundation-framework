@@ -11,5 +11,5 @@ using UnityEngine;
 
 namespace TRUEStudios.Tweens {
 	[CustomEditor(typeof(ScaleTween)), CanEditMultipleObjects]
-	public class ScaleTweenEditor : TweenEditor<ScaleTween> { }
+	public class ScaleTweenEditor : TweenEditor<ScaleTween> {}
 }
