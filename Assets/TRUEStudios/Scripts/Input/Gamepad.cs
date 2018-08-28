@@ -189,11 +189,12 @@ namespace TRUEStudios.Input {
 		public float LeftTrigger {
 			get {
 				string key = GetFullKey(LeftTriggerKey);
+
+				#if UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
 				if (UnityEngine.Input.GetAxis(key) != 0.0f) {
 					_leftTriggerTouched = true;
 				}
-
-				#if UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
+				
 				return _leftTriggerTouched ? ((UnityEngine.Input.GetAxis(key) + 1.0f) * 0.5f) : 0.0f;
 				#else
 				return UnityEngine.Input.GetAxis(key);
@@ -204,11 +205,11 @@ namespace TRUEStudios.Input {
 		public float RightTrigger {
 			get {
 				string key = GetFullKey(RightTriggerKey);
+				#if UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
 				if (UnityEngine.Input.GetAxis(key) != 0.0f) {
 					_rightTriggerTouched = true;
 				}
 
-				#if UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
 				return _rightTriggerTouched ? ((UnityEngine.Input.GetAxis(key) + 1.0f) * 0.5f) : 0.0f;
 				#else
 				return UnityEngine.Input.GetAxis(key);
