@@ -155,15 +155,15 @@ namespace TRUEStudios.Tweens {
 		#endregion
 
 		#region Actions
-		public void PlayForward (bool reset = false) {
-			Play(true, reset);
+		public void PlayForward (bool reset = false, bool relative = false) {
+			Play(true, reset, relative);
 		}
 
-		public void PlayReverse (bool reset = false) {
-			Play(false, reset);
+		public void PlayReverse (bool reset = false, bool relative = false) {
+			Play(false, reset, relative);
 		}
 
-		public Coroutine Play (bool forward = true, bool reset = false) {
+		public Coroutine Play (bool forward = true, bool reset = false, bool relative = false) {
 			// cancel any running coroutine
 			InvalidateRoutine();
 
@@ -327,12 +327,7 @@ namespace TRUEStudios.Tweens {
 			_onPlay.Invoke();
 
 			// process the update loop
-			while (true) {
-				// auto-increment based on elapsed time between frames, and break when deemed "finished"
-				if (PerformIncrement()) {
-					break;
-				}
-				
+			while (!PerformIncrement()) {
 				yield return null;
 			}
 
