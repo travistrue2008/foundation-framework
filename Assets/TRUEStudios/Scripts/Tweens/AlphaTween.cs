@@ -65,6 +65,20 @@ namespace TRUEStudios.Tweens {
 				_graphic.color = _cachedColor;
 			}
 		}
+
+		protected override void PerformRelative () {
+			float diff = _end - _begin;
+
+			if (_spriteRenderer != null) {
+				Begin = _spriteRenderer.color.a;
+			}
+
+			if (_graphic != null) {
+				Begin = _graphic.color.a;
+			}
+
+			End = Begin + diff;
+		}
 		#endregion
 	}
 }

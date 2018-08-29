@@ -12,7 +12,7 @@ using TRUEStudios.Core;
 using TRUEStudios.Events;
 
 namespace TRUEStudios.Tweens {
-	public class Tween : MonoBehaviour {
+	public abstract class Tween : MonoBehaviour {
 		public enum AwakeTarget { None, Begin, End }
 		public enum PlaybackMode { Once, Looping, Pingpong }
 		public enum PlaybackState { Stopped, Playing }
@@ -149,7 +149,9 @@ namespace TRUEStudios.Tweens {
 		}
 		#endregion
 
-		#region Virtual Methods
+		#region Abstract and Virtual Methods
+		protected abstract void PerformRelative ();
+
 		public virtual void ApplyResult () { }
 		public virtual void Swap () { }
 		#endregion
@@ -164,11 +166,15 @@ namespace TRUEStudios.Tweens {
 		}
 
 		public Coroutine Play (bool forward = true, bool reset = false, bool relative = false) {
-			// cancel any running coroutine
-			InvalidateRoutine();
+			InvalidateRoutine(); // cancel any running coroutine
+
+			// set playback direction, and check if the tween should be adjusted relatively
+			_playingForward = forward;
+			if (relative) {
+				PerformRelative();
+			}
 
 			// handle reset logic
-			_playingForward = forward;
 			if (reset) {
 				if (_playingForward) {
 					ResetToBegin();

@@ -35,6 +35,22 @@ namespace TRUEStudios.Tweens {
 					break;
 			}
 		}
+
+		protected override void PerformRelative () {
+			Vector3 diff = _end - _begin;
+
+			switch (_transformSpace) {
+				case CoordinateSpace.Local:
+					Begin = transform.localPosition;
+					break;
+
+				case CoordinateSpace.Global:
+					Begin = transform.position;
+					break;
+			}
+
+			End = Begin + diff;
+		}
 		#endregion
 	}
 }

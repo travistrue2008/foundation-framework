@@ -74,12 +74,20 @@ namespace TRUEStudios.Tweens {
 		}
 		#endregion
 
-		#region Methods
+		#region Override Methods
 		public override void ApplyResult () {
 			_result = ((_end - _begin) * DistributedValue) + _begin;
 			TargetTransform.localRotation = Quaternion.Euler(_result);
 		}
 
+		protected override void PerformRelative () {
+			Vector3 diff = _end - _begin;
+			Begin = transform.localRotation.eulerAngles;
+			End = Begin + diff;
+		}
+		#endregion
+
+		#region Private Methods
 		private Vector3 BoundAngle (Vector3 eulerAngles) {
 			// wrap all angles to a domain of 0 - 360 degrees
 			while (eulerAngles.x < 0.0f) { eulerAngles.x = (180.0f + eulerAngles.x) + 180.0f; }

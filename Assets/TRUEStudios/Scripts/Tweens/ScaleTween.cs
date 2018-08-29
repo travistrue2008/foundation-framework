@@ -15,6 +15,12 @@ namespace TRUEStudios.Tweens {
 		}
 		#endif
 
+		protected override void PerformRelative () {
+			Vector3 diff = _end - _begin;
+			Begin = transform.localScale;
+			End = Begin + diff;
+		}
+
 		public override void ApplyResult () {
 			_result = ((_end - _begin) * DistributedValue) + _begin;
 			TargetTransform.localScale = _result;
