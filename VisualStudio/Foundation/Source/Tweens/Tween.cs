@@ -139,6 +139,7 @@ namespace TRUEStudios.Tweens {
 		}
 
 		protected virtual void OnDestroy () {
+			Debug.Log($"{gameObject.name}:    Tween.OnDestroy()");
 			InvalidateRoutine();
 		}
 
@@ -206,6 +207,7 @@ namespace TRUEStudios.Tweens {
 		public void Stop () {
 			InvalidateRoutine();
 			_state = PlaybackState.Stopped;
+			Debug.Log($"{gameObject.name}:    Stop()");
 		}
 		#endregion
 
@@ -237,7 +239,6 @@ namespace TRUEStudios.Tweens {
 					break;
 			}
 
-			// finish up
 			UpdateTween();
 			return finish;
 		}
@@ -333,11 +334,18 @@ namespace TRUEStudios.Tweens {
 			_onPlay.Invoke();
 
 			// process the update loop
-			while (!PerformIncrement()) {
+			while (true) {
+				bool result = PerformIncrement();
+				Debug.Log($"{gameObject.name}:    Process(): {Factor}   Result: {result}");
+				if (result) {
+					break;
+				}
+
 				yield return null;
 			}
 
 			// stop everything
+			Debug.Log($"{gameObject.name}:    Finished tween: {this.GetType()}");
 			_processRoutine = null;
 			_state = PlaybackState.Stopped;
 			_onFinish.Invoke();

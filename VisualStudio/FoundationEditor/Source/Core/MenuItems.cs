@@ -11,23 +11,38 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class MenuItems {
-	[MenuItem("Game/Clear Preferences")]
-	public static void ClearPreferences () {
-		PlayerPrefs.DeleteAll();
-		PlayerPrefs.Save();
-	}
+namespace TRUEStudios.Core {
+	public class MenuItems {
+		#region Constants
+		public const string PackageName = "Foundation.unitypackage";
+		#endregion
 
-	[MenuItem("Game/Screenshot")]
-	public static void TakeScreenshot () {
-		const string SubDirectory = "Screenshots";
-		if (!Directory.Exists(SubDirectory)) {
-			Directory.CreateDirectory(SubDirectory);
+		#region Methods
+		[MenuItem("Game/Import Package")]
+		public static void ImportPackage() {
+			string packagePath = $"../Foundation/{PackageName}";
+			AssetDatabase.ImportPackage(packagePath, false);
+			Debug.Log("Imported package...");
 		}
 
-		// generate the timestamp, and take the screenshot
-		var timestamp = DateTime.UtcNow.ToString("yyyyMMddHHmmss");
-		ScreenCapture.CaptureScreenshot($"Screenshots/{timestamp}.png");
-		Debug.Log("Screenshot saved");
+		[MenuItem("Game/Clear Preferences")]
+		public static void ClearPreferences() {
+			PlayerPrefs.DeleteAll();
+			PlayerPrefs.Save();
+		}
+
+		[MenuItem("Game/Screenshot")]
+		public static void TakeScreenshot() {
+			const string SubDirectory = "Screenshots";
+			if (!Directory.Exists(SubDirectory)) {
+				Directory.CreateDirectory(SubDirectory);
+			}
+
+			// generate the timestamp, and take the screenshot
+			var timestamp = DateTime.UtcNow.ToString("yyyyMMddHHmmss");
+			ScreenCapture.CaptureScreenshot($"Screenshots/{timestamp}.png");
+			Debug.Log("Screenshot saved");
+		}
+		#endregion
 	}
 }

@@ -144,6 +144,9 @@ namespace TRUEStudios.Tweens {
 
 			// display the distribution curve
 			EditorGUILayout.PropertyField(_distributionCurveProperty);
+			GUI.enabled = false;
+			EditorGUILayout.Slider("Progress", Reference.Factor, 0.0f, 1.0f);
+			GUI.enabled = true;
 		}
 
 		private void DrawSetterButtons () {
