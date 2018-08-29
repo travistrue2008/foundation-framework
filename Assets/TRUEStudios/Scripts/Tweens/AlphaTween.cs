@@ -33,7 +33,7 @@ namespace TRUEStudios.Tweens {
 		#region Methods
 		#if UNITY_EDITOR
 		private AlphaTween () {
-			begin = end = 1.0f;
+			Begin = End = 1.0f;
 		}
 		#endif
 

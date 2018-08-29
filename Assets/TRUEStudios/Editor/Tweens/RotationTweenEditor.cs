@@ -18,12 +18,13 @@ namespace TRUEStudios.Tweens {
 		private SerializedProperty _zModeProperty;
 		#endregion
 
-		#region Methods
-		protected override void OnEnable () {
-			base.OnEnable();
-			_xModeProperty = serializedObject.FindProperty("_xMode");
-			_yModeProperty = serializedObject.FindProperty("_yMode");
-			_zModeProperty = serializedObject.FindProperty("_zMode");
+		#region Override Methods
+		protected override void OnSetBegin (RotationTween target) {
+			target.Begin = target.transform.localRotation.eulerAngles;
+		}
+
+		protected override void OnSetEnd (RotationTween target) {
+			target.End = target.transform.localRotation.eulerAngles;
 		}
 
 		protected override void DrawAdditionalFields () {
@@ -32,6 +33,15 @@ namespace TRUEStudios.Tweens {
 			EditorGUILayout.PropertyField(_yModeProperty);
 			EditorGUILayout.PropertyField(_zModeProperty);
 			EditorGUILayout.EndVertical();
+		}
+		#endregion
+
+		#region Methods
+		protected override void OnEnable () {
+			base.OnEnable();
+			_xModeProperty = serializedObject.FindProperty("_xMode");
+			_yModeProperty = serializedObject.FindProperty("_yMode");
+			_zModeProperty = serializedObject.FindProperty("_zMode");
 		}
 		#endregion
 	}

@@ -31,7 +31,7 @@ namespace TRUEStudios.Tweens {
 		#region Methods
 		#if UNITY_EDITOR
 		private ColorTween() {
-			begin = end = Color.white;
+			Begin = End = Color.white;
 		}
 		#endif
 

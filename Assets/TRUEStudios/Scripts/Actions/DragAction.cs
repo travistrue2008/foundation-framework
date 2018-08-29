@@ -64,7 +64,7 @@ namespace TRUEStudios.Actions {
 
 			// setup the return tween
 			_homeTween = GetComponent<PositionTween>();
-			_homeTween.end = _homePosition;
+			_homeTween.End = _homePosition;
 			_lastPosition = transform.position;
 		}
 
@@ -132,7 +132,7 @@ namespace TRUEStudios.Actions {
 			if (!instant) {
 				// return back to position using a tween
 				if (_homeTween != null) {
-					_homeTween.begin = transform.localPosition;
+					_homeTween.Begin = transform.localPosition;
 					_homeTween.Play(true, true);
 				}
 			} else {
