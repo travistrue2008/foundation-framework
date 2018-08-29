@@ -43,7 +43,10 @@ namespace TRUEStudios.Tweens {
 		public SerializedProperty EndProperty { get { return _endProperty; } }
 		#endregion
 
-		#region Virtual Methods
+		#region Abstract and Virtual Methods
+		protected abstract void OnSetBegin (T target);
+		protected abstract void OnSetEnd (T target);
+
 		protected virtual void DrawAdditionalFields () { }
 		protected virtual void DrawCustomBeginField () { }
 		protected virtual void DrawCustomEndField () { }
@@ -73,19 +76,6 @@ namespace TRUEStudios.Tweens {
 			_onUpdateProperty = serializedObject.FindProperty("_onUpdate");
 		}
 
-		protected virtual void OnDisable () {
-			// return to the cached value if not currently playing
-			if (!Application.isPlaying) {
-				foreach (Object target in targets) {
-					// check the child reference
-					var childReference = (T)target;
-					if (childReference != null) {
-						childReference.Factor = 0.0f;
-					}
-				}
-			}
-		}
-
 		public override void OnInspectorGUI () {
 			// update the serialized object
 			serializedObject.Update();
@@ -101,6 +91,7 @@ namespace TRUEStudios.Tweens {
 			DrawLoopProperties();
 			DrawDurationProperties();
 			DrawAnimationProperties();
+			DrawSetterButtons();
 			DrawResetButtons();
 			DrawEventProperties();
 
@@ -155,6 +146,42 @@ namespace TRUEStudios.Tweens {
 			EditorGUILayout.PropertyField(_distributionCurveProperty);
 		}
 
+		private void DrawSetterButtons () {
+			EditorGUILayout.BeginHorizontal();
+
+			// check if the swap button was pressed
+			EditorGUI.BeginChangeCheck();
+			GUILayout.Button("Set Begin");
+			if (EditorGUI.EndChangeCheck()) {
+				Undo.RecordObjects(targets, "Set Begin");
+				foreach (Object target in targets) {
+					OnSetBegin((T)target);
+				}
+			}
+
+			// check if the swap button was pressed
+			EditorGUI.BeginChangeCheck();
+			GUILayout.Button("Set End");
+			if (EditorGUI.EndChangeCheck()) {
+				Undo.RecordObjects(targets, "Set End");
+				foreach (Object target in targets) {
+					OnSetEnd((T)target);
+				}
+			}
+
+			// check if the swap button was pressed
+			EditorGUI.BeginChangeCheck();
+			GUILayout.Button("Swap");
+			if (EditorGUI.EndChangeCheck()) {
+				Undo.RecordObjects(targets, "Swap Begin and End");
+				foreach (Object target in targets) {
+					((T)target).Swap();
+				}
+			}
+
+			EditorGUILayout.EndHorizontal();
+		}
+
 		private void DrawResetButtons () {
 			// convenience buttons
 			EditorGUILayout.BeginHorizontal();
@@ -168,16 +195,6 @@ namespace TRUEStudios.Tweens {
 			if (GUILayout.Button("To End")) {
 				foreach (Object target in targets) {
 					((T)target).ResetToEnd();
-				}
-			}
-
-			// check if the swap button was pressed
-			EditorGUI.BeginChangeCheck();
-			GUILayout.Button("Swap");
-			if (EditorGUI.EndChangeCheck()) {
-				Undo.RecordObjects(targets, "Swap Begin and End");
-				foreach (Object target in targets) {
-					((T)target).Swap();
 				}
 			}
 			

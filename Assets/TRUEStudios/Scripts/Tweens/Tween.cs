@@ -13,13 +13,13 @@ using TRUEStudios.Events;
 
 namespace TRUEStudios.Tweens {
 	public class Tween : MonoBehaviour {
-		public enum AwakeTarget { Begin, End }
+		public enum AwakeTarget { None, Begin, End }
 		public enum PlaybackMode { Once, Looping, Pingpong }
 		public enum PlaybackState { Stopped, Playing }
 
 		#region Fields
 		[SerializeField]
-		private AwakeTarget _awakeTarget = AwakeTarget.Begin;
+		private AwakeTarget _awakeTarget = AwakeTarget.None;
 		[SerializeField]
 		private PlaybackMode _loopMode = PlaybackMode.Once;
 		[SerializeField]
@@ -122,8 +122,7 @@ namespace TRUEStudios.Tweens {
 			}
 
 			// apply tween changes as desired
-			switch (_awakeTarget)
-			{
+			switch (_awakeTarget) {
 				case AwakeTarget.Begin:
 					ResetToBegin();
 					break;
@@ -356,9 +355,9 @@ namespace TRUEStudios.Tweens {
 		#endregion
 
 		#region Properties
-		public T result { get { return _result; } }
+		public T Result { get { return _result; } }
 
-		public T begin {
+		public T Begin {
 			set {
 				BeginWillBeSet(value);
 				_begin = value;
@@ -367,7 +366,7 @@ namespace TRUEStudios.Tweens {
 			get { return _begin; }
 		}
 
-		public T end {
+		public T End {
 			set {
 				EndWillBeSet(value);
 				_end = value;
@@ -390,9 +389,9 @@ namespace TRUEStudios.Tweens {
 		}
 
 		public override void Swap () {
-			T temp = begin;
-			begin = end;
-			end = temp;
+			T temp = Begin;
+			Begin = End;
+			End = temp;
 		}
 		#endregion
 	}

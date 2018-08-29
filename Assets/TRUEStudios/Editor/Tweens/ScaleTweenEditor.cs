@@ -11,5 +11,15 @@ using UnityEngine;
 
 namespace TRUEStudios.Tweens {
 	[CustomEditor(typeof(ScaleTween)), CanEditMultipleObjects]
-	public class ScaleTweenEditor : TweenEditor<ScaleTween> {}
+	public class ScaleTweenEditor : TweenEditor<ScaleTween> {
+		#region Override Methods
+		protected override void OnSetBegin (ScaleTween target) {
+			target.Begin = target.transform.localScale;
+		}
+
+		protected override void OnSetEnd (ScaleTween target) {
+			target.End = target.transform.localScale;
+		}
+		#endregion
+	}
 }

@@ -11,7 +11,7 @@ namespace TRUEStudios.Tweens {
 		#region Methods
 		#if UNITY_EDITOR
 		private ScaleTween () {
-			begin = end = Vector3.one;
+			Begin = End = Vector3.one;
 		}
 		#endif
 
