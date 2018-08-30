@@ -9,9 +9,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using TRUEStudios.State;
 
-namespace TRUEStudios.Core {
+namespace TRUEStudios.UI {
 	public class FirstResponder : MonoBehaviour {
 		private static FirstResponder _instance;
 

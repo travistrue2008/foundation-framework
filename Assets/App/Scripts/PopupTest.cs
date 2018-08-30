@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using TRUEStudios.State;
+using TRUEStudios.Core;
+using TRUEStudios.UI;
 
 namespace TRUEStudios.State.Tests {
 	public class PopupTest : MonoBehaviour {

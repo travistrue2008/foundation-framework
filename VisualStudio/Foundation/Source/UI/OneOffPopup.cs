@@ -6,10 +6,9 @@
 
 using System;
 using UnityEngine;
+using TRUEStudios.Core;
 
-using TRUEStudios.State;
-
-namespace TRUEStudios.Core {
+namespace TRUEStudios.UI {
 	public class OneOffPopup : MonoBehaviour {
 		#region Fields
 		[SerializeField]

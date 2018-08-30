@@ -8,7 +8,6 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
-
 using TRUEStudios.Tweens;
 
 namespace TRUEStudios.Actions {

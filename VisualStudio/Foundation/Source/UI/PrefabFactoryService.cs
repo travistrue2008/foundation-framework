@@ -7,8 +7,9 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using TRUEStudios.Core;
 
-namespace TRUEStudios.State {
+namespace TRUEStudios.UI {
 	public class PrefabProfile {
 		public Type ComponentType { private set; get; }
 		public GameObject Prefab { private set; get; }
