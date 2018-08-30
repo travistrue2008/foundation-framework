@@ -131,7 +131,9 @@ namespace TRUEStudios.Tweens {
 					ResetToEnd();
 					break;
 			}
+		}
 
+		protected virtual void Start () {
 			// start playing if set to play, but not already running
 			if (_state == PlaybackState.Playing) {
 				Play(_playingForward);
@@ -139,7 +141,6 @@ namespace TRUEStudios.Tweens {
 		}
 
 		protected virtual void OnDestroy () {
-			Debug.Log($"{gameObject.name}:    Tween.OnDestroy()");
 			InvalidateRoutine();
 		}
 
@@ -158,12 +159,20 @@ namespace TRUEStudios.Tweens {
 		#endregion
 
 		#region Actions
-		public void PlayForward (bool reset = false, bool relative = false) {
-			Play(true, reset, relative);
+		public void PlayForward (bool reset = false) {
+			Play(true, reset, false);
 		}
 
-		public void PlayReverse (bool reset = false, bool relative = false) {
-			Play(false, reset, relative);
+		public void PlayForwardRelative(bool reset = false) {
+			Play(true, reset, true);
+		}
+
+		public void PlayReverse (bool reset = false) {
+			Play(false, reset, false);
+		}
+
+		public void PlayReverseRelative(bool reset = false) {
+			Play(false, reset, true);
 		}
 
 		public Coroutine Play (bool forward = true, bool reset = false, bool relative = false) {
@@ -207,7 +216,6 @@ namespace TRUEStudios.Tweens {
 		public void Stop () {
 			InvalidateRoutine();
 			_state = PlaybackState.Stopped;
-			Debug.Log($"{gameObject.name}:    Stop()");
 		}
 		#endregion
 
@@ -334,18 +342,11 @@ namespace TRUEStudios.Tweens {
 			_onPlay.Invoke();
 
 			// process the update loop
-			while (true) {
-				bool result = PerformIncrement();
-				Debug.Log($"{gameObject.name}:    Process(): {Factor}   Result: {result}");
-				if (result) {
-					break;
-				}
-
+			while (!PerformIncrement()) {
 				yield return null;
 			}
 
 			// stop everything
-			Debug.Log($"{gameObject.name}:    Finished tween: {this.GetType()}");
 			_processRoutine = null;
 			_state = PlaybackState.Stopped;
 			_onFinish.Invoke();

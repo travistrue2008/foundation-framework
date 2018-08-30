@@ -72,9 +72,7 @@ namespace TRUEStudios.Tweens {
 			_fixedEnd = BoundAngle(to);
 			FindDifference();
 		}
-		#endregion
 
-		#region Override Methods
 		public override void ApplyResult () {
 			_result = ((_end - _begin) * DistributedValue) + _begin;
 			TargetTransform.localRotation = Quaternion.Euler(_result);
