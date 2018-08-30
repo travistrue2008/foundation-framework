@@ -14,7 +14,7 @@ namespace TRUEStudios.Events {
 	
 	public abstract class EventListener<TUnityEvent, TEventHub, T0, T1> : EventListenerBase<T0, T1>
 		where TUnityEvent : UnityEvent<T0, T1>, new()
-		where TEventHub : EventHub<T0, T1>, new() {
+		where TEventHub : EventHub<T0, T1> {
 
 		#region Fields
 		[SerializeField]

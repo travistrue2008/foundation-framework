@@ -6,10 +6,11 @@
 
 using System;
 using UnityEngine;
+using TRUEStudios.Events;
 
 namespace TRUEStudios.Variables {
 	[Serializable]
-	public class FloatReference : BaseReference<FloatVariable, float> {}
+	public class FloatReference : BaseReference<float, FloatVariable, FloatEvent> {}
 
 	[CreateAssetMenu(menuName = "TRUEStudios/Variables/Float", fileName = "New Variable (float)")]
 	public class FloatVariable : BaseVariable<float> {}

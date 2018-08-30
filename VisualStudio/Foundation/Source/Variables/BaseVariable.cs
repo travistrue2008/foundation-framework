@@ -5,21 +5,34 @@
 ******************************************************************************/
 
 using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace TRUEStudios.Variables {
 	[Serializable]
-	public class BaseReference<TVariable, TValue> where TVariable : BaseVariable<TValue> {
+	public abstract class BaseReference<TValue, TVariable, TUnityEvent>
+		where TVariable : BaseVariable<TValue>
+		where TUnityEvent : UnityEvent<TValue>, new() {
 		public bool UseConstant = true;
 		public TValue ConstantValue = default(TValue);
 		public TVariable Variable;
+		public TUnityEvent OnChange = new TUnityEvent();
 
 		public TValue Value {
 			set {
+				bool changed = false;
+
 				if (UseConstant) {
+					changed = EqualityComparer<TValue>.Default.Equals(ConstantValue, value);
 					ConstantValue = value;
 				} else {
+					changed = EqualityComparer<TValue>.Default.Equals(Variable.Value, value);
 					Variable.Value = value;
+				}
+
+				if (changed) {
+					OnChange.Invoke(value);
 				}
 			}
 

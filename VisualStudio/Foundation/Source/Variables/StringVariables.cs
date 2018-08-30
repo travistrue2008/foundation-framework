@@ -6,10 +6,11 @@
 
 using System;
 using UnityEngine;
+using TRUEStudios.Events;
 
 namespace TRUEStudios.Variables {
 	[Serializable]
-	public class StringReference : BaseReference<StringVariable, string> { }
+	public class StringReference : BaseReference<string, StringVariable, StringEvent> { }
 
 	[CreateAssetMenu(menuName = "TRUEStudios/Variables/String", fileName = "New Variable (string)")]
 	public class StringVariable : BaseVariable<string> { }
