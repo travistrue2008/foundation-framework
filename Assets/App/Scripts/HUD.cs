@@ -7,12 +7,9 @@ public class HUD : MonoBehaviour {
 	#region Fields
 	[SerializeField]
 	private TextMeshProUGUI _hpLabel;
-	[SerializeField]
-	private TextMeshProUGUI _intTestLabel;
 	#endregion
 
 	#region Properties
-	public int IntValue { set; get; }
 	public float HP { set; get; }
 	#endregion
 
@@ -23,7 +20,6 @@ public class HUD : MonoBehaviour {
 
 	private void Update () {
 		_hpLabel.text = $"HP: {HP:N0}";
-		_intTestLabel.text = $"INT: {IntValue}";
 	}
 	#endregion
 
