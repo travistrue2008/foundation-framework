@@ -10,39 +10,39 @@ using UnityEngine;
 using UnityEditor;
 
 namespace TRUEStudios.Variables {
-	[CustomPropertyDrawer(typeof(FloatReference))]
-	public class FloatVariableEditor : PropertyDrawer {
-		#region Methods
-		public override void OnGUI (Rect rect, SerializedProperty property, GUIContent label) {
-			int id = GUIUtility.GetControlID(FocusType.Passive);
+	public abstract class BaseVariableDrawer : PropertyDrawer {
+		#region Abstract and Virtual Methods
+		protected abstract void DrawConstantField (Rect contentRect, SerializedProperty constantProperty, GUIContent label);
+		#endregion
+
+		#region Overrides Methods
+		public override void OnGUI(Rect rect, SerializedProperty property, GUIContent label) {
 			var useConstantProperty = property.FindPropertyRelative("UseConstant");
 			bool useConstant = useConstantProperty.boolValue;
 
 			EditorGUI.BeginProperty(rect, label, property);
-			OnField(rect, property, label, useConstant);
-			OnMenuButton(rect, property, useConstant);
+			DrawField(rect, property, label, useConstant);
+			DrawMenuButton(rect, property, useConstant);
 			property.serializedObject.ApplyModifiedProperties();
 			EditorGUI.EndProperty();
 		}
+		#endregion
 
-		private void OnField (Rect rect, SerializedProperty property, GUIContent label, bool useConstant) {
+		#region Private Methods
+		private void DrawField(Rect rect, SerializedProperty property, GUIContent label, bool useConstant) {
 			var propertyRect = GetPropertyRect(rect); // setup the property size rect
 			var constantValueProperty = property.FindPropertyRelative("ConstantValue");
 			var variableProperty = property.FindPropertyRelative("Variable");
 
 			// either render the constant value, or a ScriptableObject reference
 			if (useConstant) {
-				float prevValue = constantValueProperty.floatValue;
-				float nextValue = EditorGUI.FloatField(propertyRect, label, prevValue);
-				if (prevValue != nextValue) {
-					constantValueProperty.floatValue = nextValue;
-				}
+				DrawConstantField(propertyRect, constantValueProperty, label);
 			} else {
-				EditorGUI.PropertyField(propertyRect, variableProperty);
+				EditorGUI.PropertyField(propertyRect, variableProperty, label);
 			}
 		}
 
-		private void OnMenuButton (Rect rect, SerializedProperty property, bool useConstant) {
+		private void DrawMenuButton(Rect rect, SerializedProperty property, bool useConstant) {
 			float height = GetPropertyHeight(property, null);
 			var buttonPos = new Vector2(rect.position.x + (rect.size.x - height), rect.position.y);
 			var buttonRect = new Rect(buttonPos, Vector2.one * height);
@@ -56,12 +56,12 @@ namespace TRUEStudios.Variables {
 			}
 		}
 
-		private void SetProperty (SerializedProperty property, bool useConstant) {
+		private void SetProperty(SerializedProperty property, bool useConstant) {
 			property.FindPropertyRelative("UseConstant").boolValue = useConstant;
 			property.serializedObject.ApplyModifiedProperties();
 		}
 
-		private Rect GetPropertyRect (Rect source) {
+		private Rect GetPropertyRect(Rect source) {
 			// setup the property size rect
 			var propertyRect = new Rect(source);
 			var propertySize = propertyRect.size;
