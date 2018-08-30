@@ -11,28 +11,38 @@ using UnityEditor;
 
 namespace TRUEStudios.Variables {
 	public abstract class BaseVariableDrawer : PropertyDrawer {
+		#region Constants
+		public const float FieldHeight = 16.0f;
+		#endregion
+
 		#region Abstract and Virtual Methods
 		protected abstract void DrawConstantField (Rect contentRect, SerializedProperty constantProperty, GUIContent label);
 		#endregion
 
 		#region Overrides Methods
-		public override void OnGUI(Rect rect, SerializedProperty property, GUIContent label) {
+		public override void OnGUI (Rect rect, SerializedProperty property, GUIContent label) {
 			var useConstantProperty = property.FindPropertyRelative("UseConstant");
 			bool useConstant = useConstantProperty.boolValue;
 
 			EditorGUI.BeginProperty(rect, label, property);
 			DrawField(rect, property, label, useConstant);
 			DrawMenuButton(rect, property, useConstant);
+			DrawEvent(rect, property);
 			property.serializedObject.ApplyModifiedProperties();
 			EditorGUI.EndProperty();
+		}
+
+		public override float GetPropertyHeight (SerializedProperty property, GUIContent label) {
+			var eventProperty = property.FindPropertyRelative("_onChange");
+			return FieldHeight + EditorGUI.GetPropertyHeight(eventProperty);
 		}
 		#endregion
 
 		#region Private Methods
-		private void DrawField(Rect rect, SerializedProperty property, GUIContent label, bool useConstant) {
+		private void DrawField (Rect rect, SerializedProperty property, GUIContent label, bool useConstant) {
 			var propertyRect = GetPropertyRect(rect); // setup the property size rect
-			var constantValueProperty = property.FindPropertyRelative("ConstantValue");
-			var variableProperty = property.FindPropertyRelative("Variable");
+			var constantValueProperty = property.FindPropertyRelative("_constantValue");
+			var variableProperty = property.FindPropertyRelative("_variable");
 
 			// either render the constant value, or a ScriptableObject reference
 			if (useConstant) {
@@ -42,10 +52,9 @@ namespace TRUEStudios.Variables {
 			}
 		}
 
-		private void DrawMenuButton(Rect rect, SerializedProperty property, bool useConstant) {
-			float height = GetPropertyHeight(property, null);
-			var buttonPos = new Vector2(rect.position.x + (rect.size.x - height), rect.position.y);
-			var buttonRect = new Rect(buttonPos, Vector2.one * height);
+		private void DrawMenuButton (Rect rect, SerializedProperty property, bool useConstant) {
+			var buttonPos = new Vector2(rect.position.x + (rect.size.x - FieldHeight), rect.position.y);
+			var buttonRect = new Rect(buttonPos, Vector2.one * FieldHeight);
 
 			// dropdown button
 			if (EditorGUI.DropdownButton(buttonRect, new GUIContent(""), FocusType.Keyboard)) {
@@ -56,16 +65,31 @@ namespace TRUEStudios.Variables {
 			}
 		}
 
-		private void SetProperty(SerializedProperty property, bool useConstant) {
+		private void DrawEvent (Rect rect, SerializedProperty property) {
+			var eventProperty = property.FindPropertyRelative("_onChange");
+
+			var position = rect.position;
+
+			var size = rect.size;
+			size.y = EditorGUI.GetPropertyHeight(eventProperty);
+
+			var eventRect = new Rect(position, size);
+			eventRect.y += FieldHeight;
+
+			EditorGUI.PropertyField(eventRect, eventProperty);
+		}
+
+		private void SetProperty (SerializedProperty property, bool useConstant) {
 			property.FindPropertyRelative("UseConstant").boolValue = useConstant;
 			property.serializedObject.ApplyModifiedProperties();
 		}
 
-		private Rect GetPropertyRect(Rect source) {
+		private Rect GetPropertyRect (Rect source) {
 			// setup the property size rect
 			var propertyRect = new Rect(source);
 			var propertySize = propertyRect.size;
-			propertySize.x -= 18.0f; // make room for the dropdown button
+			propertySize.x -= FieldHeight + 2.0f; // make room for the dropdown button
+			propertySize.y = FieldHeight;
 			propertyRect.size = propertySize;
 			return propertyRect;
 		}

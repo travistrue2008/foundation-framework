@@ -14,30 +14,40 @@ namespace TRUEStudios.Variables {
 	public abstract class BaseReference<TValue, TVariable, TUnityEvent>
 		where TVariable : BaseVariable<TValue>
 		where TUnityEvent : UnityEvent<TValue>, new() {
+		#region Fields
 		public bool UseConstant = true;
-		public TValue ConstantValue = default(TValue);
-		public TVariable Variable;
-		public TUnityEvent OnChange = new TUnityEvent();
+
+		[SerializeField]
+		public TValue _constantValue = default(TValue);
+		[SerializeField]
+		private TVariable _variable;
+		[SerializeField]
+		private TUnityEvent _onChange = new TUnityEvent();
+		#endregion
+
+		#region Properties
+		public TUnityEvent OnChange { get { return _onChange; } }
 
 		public TValue Value {
 			set {
 				bool changed = false;
 
 				if (UseConstant) {
-					changed = EqualityComparer<TValue>.Default.Equals(ConstantValue, value);
-					ConstantValue = value;
+					changed = EqualityComparer<TValue>.Default.Equals(_constantValue, value);
+					_constantValue = value;
 				} else {
-					changed = EqualityComparer<TValue>.Default.Equals(Variable.Value, value);
-					Variable.Value = value;
+					changed = EqualityComparer<TValue>.Default.Equals(_variable.Value, value);
+					_variable.Value = value;
 				}
 
 				if (changed) {
-					OnChange.Invoke(value);
+					_onChange.Invoke(value);
 				}
 			}
 
-			get { return UseConstant ? ConstantValue : Variable.Value; }
+			get { return UseConstant ? _constantValue : _variable.Value; }
 		}
+		#endregion
 	}
 
 	public class BaseVariable<T> : ScriptableObject {
