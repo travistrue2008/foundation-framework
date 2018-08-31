@@ -31,6 +31,7 @@ namespace TRUEStudios.UI {
 
 		#region Setup
 		protected virtual void Start () {
+			// get the parent PopupStack
 			_stack = transform.parent.parent.GetComponent<PopupStack>();
 			if (_stack == null) {
 				Debug.LogWarning("Popup was spawned, but not managed by the PopupStack");
@@ -44,10 +45,10 @@ namespace TRUEStudios.UI {
 			}
 		}
 
-		public void Dismiss () {
+		public void Dismiss (bool clear = false) {
 			// only pop the last popup off the stack if it's this particular popup
 			if (_stack.CurrentPopup == this) {
-				_stack.Pop();
+				_stack.Pop(clear); // clear the stack if necessary
 			} else {
 				Debug.LogWarning("This popup isn't the active popup");
 			}

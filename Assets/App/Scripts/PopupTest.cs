@@ -16,15 +16,16 @@ namespace TRUEStudios.State.Tests {
 		#endregion
 
 		#region Methods
-		private void Start () {
+		private IEnumerator Start () {
 			RunInstantTest(10);
-			RunFrameDelayTest(10);
-			RunFullDelayTest(10);
+			yield return RunFrameDelayTest(10);
+			yield return RunFullDelayTest(10);
+			yield return RunPopClearTest(10);
 		}
 		#endregion
 
 		#region Test Methods
-		public void RunInstantTest (int numPopups) {
+		private void RunInstantTest (int numPopups) {
 			// make sure there are popups
 			if (numPopups < 1) {
 				throw new Exception("numPopups must be at least 1.");
@@ -41,19 +42,28 @@ namespace TRUEStudios.State.Tests {
 			}
 		}
 
-		public void RunFrameDelayTest (int numPopups) {
+		private Coroutine RunFrameDelayTest (int numPopups) {
 			// make sure there are popups
 			if (numPopups > 0) {
-				StartCoroutine(ProcessFrameDelayTest(numPopups));
+				return StartCoroutine(ProcessFrameDelayTest(numPopups));
 			} else {
 				throw new Exception("numPopups must be at least 1.");
 			}
 		}
 
-		public void RunFullDelayTest (int numPopups) {
+		private Coroutine RunFullDelayTest (int numPopups) {
 			// make sure there are popups
 			if (numPopups > 0) {
-				StartCoroutine(ProcessFullDelayTest(numPopups));
+				return StartCoroutine(ProcessFullDelayTest(numPopups));
+			} else {
+				throw new Exception("numPopups must be at least 1.");
+			}
+		}
+
+		private Coroutine RunPopClearTest (int numPopups) {
+			// make sure there are popups
+			if (numPopups > 0) {
+				return StartCoroutine(ProcessPopClearTest(numPopups));
 			} else {
 				throw new Exception("numPopups must be at least 1.");
 			}
@@ -91,6 +101,19 @@ namespace TRUEStudios.State.Tests {
 					yield return null;
 				}
 			}
+		}
+
+		private IEnumerator ProcessPopClearTest (int numPopups) {
+			// create popups
+			for (int i = 0; i < numPopups; ++i) {
+				_popupStack.Push<Popup>(_testPopup);
+				while (_popupStack.IsTransitioning) {
+					yield return null;
+				}
+			}
+
+			// pop the current popup, and clear the stack
+			_popupStack.CurrentPopup.Dismiss(true);
 		}
 		#endregion
 	}

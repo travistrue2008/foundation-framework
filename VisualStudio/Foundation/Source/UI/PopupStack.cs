@@ -110,7 +110,7 @@ namespace TRUEStudios.UI {
 			return Instantiate<T>(prefab.gameObject, _popupSpawn);
 		}
 
-		public Popup Pop () {
+		public Popup Pop (bool clear = false) {
 			// make sure there is a popup to dismiss
 			Popup dismissingPopup = CurrentPopup;
 			if (dismissingPopup != null) {
@@ -122,7 +122,7 @@ namespace TRUEStudios.UI {
 
 				// stop any current transition, and begin the new one
 				CancelTransition();
-				_transitionRoutine = StartCoroutine(ProcessPop());
+				_transitionRoutine = StartCoroutine(ProcessPop(clear));
 			} else {
 				Debug.LogWarning("No popups available to dismiss.");
 			}
@@ -203,7 +203,7 @@ namespace TRUEStudios.UI {
 			_transitionRoutine = null;
 		}
 
-		private IEnumerator ProcessPop () {
+		private IEnumerator ProcessPop (bool clear) {
 			_transitionBlockerImage.gameObject.SetActive(true);
 			_transitioningOut = true;
 
@@ -227,10 +227,15 @@ namespace TRUEStudios.UI {
 				}
 			}
 
-			// deactivate the transition blocker image, and stop invalidate the transition coroutine
-			_stackBlockerImage.gameObject.SetActive(StackSize > 0);
-			_transitionBlockerImage.gameObject.SetActive(false);
-			_transitionRoutine = null;
+			// check if the stack shouldn't be cleared
+			if (!clear) {
+				// deactivate the transition blocker image, and stop invalidate the transition coroutine
+				_stackBlockerImage.gameObject.SetActive(StackSize > 0);
+				_transitionBlockerImage.gameObject.SetActive(false);
+				_transitionRoutine = null;
+			} else {
+				ClearStack();
+			}
 		}
 		#endregion
 	}
