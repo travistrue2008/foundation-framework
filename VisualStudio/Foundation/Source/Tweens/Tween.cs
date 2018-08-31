@@ -13,27 +13,21 @@ using TRUEStudios.Events;
 
 namespace TRUEStudios.Tweens {
 	public abstract class Tween : MonoBehaviour {
-		public enum AwakeTarget { None, Begin, End }
 		public enum PlaybackMode { Once, Looping, Pingpong }
-		public enum PlaybackState { Stopped, Playing }
 
 		#region Fields
 		[SerializeField]
-		private AwakeTarget _awakeTarget = AwakeTarget.None;
-		[SerializeField]
 		private PlaybackMode _loopMode = PlaybackMode.Once;
 		[SerializeField]
-		private PlaybackState _state = PlaybackState.Stopped;
+		private bool _isPlaying = false;
 		[SerializeField]
-		private bool _playingForward = true;
+		private bool _isForward = true;
 		[SerializeField]
 		private int _numIterations = 0;
 		[SerializeField]
 		private float _duration = 1.0f;
 		[SerializeField]
 		private float _delay = 0.0f;
-		[SerializeField]
-		private GameObject _target;
 		[SerializeField]
 		private AnimationCurve _distributionCurve = AnimationCurve.Linear(0.0f, 0.0f, 1.0f, 1.0f);
 		[SerializeField]
@@ -54,7 +48,8 @@ namespace TRUEStudios.Tweens {
 
 		#region Properties
 		public int IterationsLeft { private set; get; }
-		public bool IsPlayingForward { get { return _playingForward; } }
+		public bool IsPlaying { get { return _isPlaying; } }
+		public bool IsForward { get { return _isForward; } }
 		public UnityEvent OnPlay { get { return _onPlay; } }
 		public UnityEvent OnFinish { get { return _onFinish; } }
 		public UnityEvent OnIterate { get { return _onIterate; } }
@@ -66,26 +61,10 @@ namespace TRUEStudios.Tweens {
 				return _distributionCurve.Evaluate(_factor);
 			}
 		}
-
-		public Transform TargetTransform {
-			get {
-				return (_target != null) ? _target.transform : transform;
-			}
-		}
-
-		public GameObject Target {
-			set { _target = value; }
-			get { return _target; }
-		}
 		
 		public PlaybackMode LoopMode {
 			set { _loopMode = value; }
 			get { return _loopMode; }
-		}
-
-		public PlaybackState State {
-			set { _state = value; }
-			get { return _state; }
 		}
 
 		public int NumIterations {
@@ -115,39 +94,30 @@ namespace TRUEStudios.Tweens {
 		#endregion
 
 		#region MonoBehaviour Hooks
-		protected virtual void Awake () {
-			// set the target to self if not set in the Inspector
-			if (_target == null) {
-				_target = gameObject;
-			}
-
-			// apply tween changes as desired
-			switch (_awakeTarget) {
-				case AwakeTarget.Begin:
-					ResetToBegin();
-					break;
-
-				case AwakeTarget.End:
-					ResetToEnd();
-					break;
+		protected virtual void OnEnable () {
+			// resume playing the coroutine
+			if (_isPlaying) {
+				Play(_isForward);
 			}
 		}
 
-		protected virtual void Start () {
-			// start playing if set to play, but not already running
-			if (_state == PlaybackState.Playing) {
-				Play(_playingForward);
-			}
-		}
-
-		protected virtual void OnDestroy () {
-			InvalidateRoutine();
+		protected virtual void OnDisable () {
+			InvalidateRoutine(); // stop the current coroutine since it will be canceled
 		}
 
 		private void OnValidate () {
 			NumIterations = _numIterations;
 			Duration = _duration;
 			Delay = _delay;
+
+			// play/pause depending on if it's active
+			if (Application.isPlaying && isActiveAndEnabled) {
+				if (_isPlaying) {
+					Play(_isForward);
+				} else {
+					Pause();
+				}
+			}
 		}
 		#endregion
 
@@ -159,34 +129,38 @@ namespace TRUEStudios.Tweens {
 		#endregion
 
 		#region Actions
+		// UnityEvent compatibility
 		public void PlayForward (bool reset = false) {
 			Play(true, reset, false);
 		}
 
+		// UnityEvent compatibility
 		public void PlayForwardRelative(bool reset = false) {
 			Play(true, reset, true);
 		}
 
+		// UnityEvent compatibility
 		public void PlayReverse (bool reset = false) {
 			Play(false, reset, false);
 		}
 
+		// UnityEvent compatibility
 		public void PlayReverseRelative(bool reset = false) {
 			Play(false, reset, true);
 		}
 
 		public Coroutine Play (bool forward = true, bool reset = false, bool relative = false) {
-			InvalidateRoutine(); // cancel any running coroutine
+			if (_isPlaying && _processRoutine != null) { return null; } // don't process if already playing
 
 			// set playback direction, and check if the tween should be adjusted relatively
-			_playingForward = forward;
+			_isForward = forward;
 			if (relative) {
 				PerformRelative();
 			}
 
 			// handle reset logic
 			if (reset) {
-				if (_playingForward) {
+				if (_isForward) {
 					ResetToBegin();
 				} else {
 					ResetToEnd();
@@ -213,9 +187,15 @@ namespace TRUEStudios.Tweens {
 			UpdateTween();
 		}
 
+		public void Pause() {
+			InvalidateRoutine();
+			_isPlaying = false;
+		}
+
 		public void Stop () {
 			InvalidateRoutine();
-			_state = PlaybackState.Stopped;
+			Factor = 0.0f;
+			_isPlaying = false;
 		}
 		#endregion
 
@@ -230,7 +210,7 @@ namespace TRUEStudios.Tweens {
 
 		private bool PerformIncrement () {
 			bool finish = false;
-			_currentTime += IsPlayingForward ? Time.deltaTime : -Time.deltaTime; // offset time based on playback direction
+			_currentTime += _isForward ? Time.deltaTime : -Time.deltaTime; // offset time based on playback direction
 
 			// handle end of the loop
 			switch (_loopMode) {
@@ -253,7 +233,7 @@ namespace TRUEStudios.Tweens {
 
 		private bool PerformIncrementOnce () {
 			_currentTime = Mathf.Clamp(_currentTime, 0.0f, Duration);
-			if (_playingForward) {
+			if (_isForward) {
 				return (_currentTime == Duration);
 			} else {
 				return (_currentTime == 0.0f) ;
@@ -263,7 +243,7 @@ namespace TRUEStudios.Tweens {
 		private bool PerformIncrementLooping () {
 			bool finish = false;
 
-			if (_playingForward) {
+			if (_isForward) {
 				if (_currentTime > Duration) {
 					finish = Iterate();
 					if (finish) {
@@ -289,7 +269,7 @@ namespace TRUEStudios.Tweens {
 		private bool PerformIncrementPingPong () {
 			bool finish = false;
 
-			if (_playingForward) {
+			if (_isForward) {
 				if (_currentTime >= Duration) {
 					finish = Iterate();
 					if (finish) {
@@ -298,7 +278,7 @@ namespace TRUEStudios.Tweens {
 						_currentTime = Duration - (_currentTime - Duration);
 					}
 
-					_playingForward = false;
+					_isForward = false;
 				}
 			} else {
 				if (_currentTime <= 0.0f) {
@@ -309,7 +289,7 @@ namespace TRUEStudios.Tweens {
 						_currentTime = -_currentTime;
 					}
 
-					_playingForward = true;
+					_isForward = true;
 				}
 			}
 
@@ -322,33 +302,38 @@ namespace TRUEStudios.Tweens {
 		}
 
 		private void InvalidateRoutine () {
-			if (_processRoutine != null) {
-				StopCoroutine(_processRoutine);
-				_processRoutine = null;
-			}
+			if (_processRoutine == null) { return; }
+
+			StopCoroutine(_processRoutine);
+			_processRoutine = null;
 		}
 
 		private IEnumerator Process () {
 			float delayTime = 0.0f;
 
-			// run the delay upon playing
-			while (delayTime < _delay) {
-				delayTime += Time.deltaTime;
-				yield return null;
+			// check for a delay
+			if (_delay > 0.0f) {
+				ApplyResult();
+
+				// run the delay upon playing
+				while (delayTime < _delay) {
+					delayTime += Time.deltaTime;
+					yield return null;
+				}
 			}
 
 			// start the tween
-			_state = PlaybackState.Playing;
+			_isPlaying = true;
 			_onPlay.Invoke();
 
 			// process the update loop
 			while (!PerformIncrement()) {
 				yield return null;
 			}
+			_isPlaying = false;
 
 			// stop everything
-			_processRoutine = null;
-			_state = PlaybackState.Stopped;
+			InvalidateRoutine();
 			_onFinish.Invoke();
 		}
 		#endregion
@@ -393,11 +378,6 @@ namespace TRUEStudios.Tweens {
 		#endregion
 
 		#region Methods
-		protected override void Awake () {
-			base.Awake();
-			OnUpdate.AddListener(delegate { ApplyResult(); });
-		}
-
 		public override void Swap () {
 			T temp = Begin;
 			Begin = End;

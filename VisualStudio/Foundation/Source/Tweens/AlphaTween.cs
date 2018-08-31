@@ -37,8 +37,7 @@ namespace TRUEStudios.Tweens {
 		}
 		#endif
 
-		protected override void Awake () {
-			base.Awake();
+		private void Awake () {
 			if (_spriteRenderer == null) {
 				_spriteRenderer = GetComponent<SpriteRenderer>();
 			}

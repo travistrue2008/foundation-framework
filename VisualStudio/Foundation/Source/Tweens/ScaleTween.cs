@@ -23,7 +23,7 @@ namespace TRUEStudios.Tweens {
 
 		public override void ApplyResult () {
 			_result = ((_end - _begin) * DistributedValue) + _begin;
-			TargetTransform.localScale = _result;
+			transform.localScale = _result;
 		}
 		#endregion
 	}

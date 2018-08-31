@@ -13,11 +13,8 @@ namespace TRUEStudios.Tweens {
 	[CustomEditor(typeof(Tween)), CanEditMultipleObjects]
 	public abstract class TweenEditor<T> : Editor where T : Tween {
 		#region Fields
-		private SerializedProperty _awakeTargetProperty;
-		private SerializedProperty _targetProperty;
-
-		private SerializedProperty _stateProperty;
-		private SerializedProperty _playingForwardProperty;
+		private SerializedProperty _isPlayingProperty;
+		private SerializedProperty _isForwardProperty;
 
 		private SerializedProperty _loopModeProperty;
 		private SerializedProperty _numIterationsProperty;
@@ -36,7 +33,6 @@ namespace TRUEStudios.Tweens {
 		#endregion
 
 		#region Properties
-		public bool EnableTargetField { protected set; get; }
 		public bool ProvideCustomFields { protected set; get; }
 		public T Reference { get { return (T)target; } }
 		public SerializedProperty BeginProperty { get { return _beginProperty; } }
@@ -54,11 +50,8 @@ namespace TRUEStudios.Tweens {
 
 		#region Editor Hooks
 		protected virtual void OnEnable () {
-			_awakeTargetProperty = serializedObject.FindProperty("_awakeTarget");
-			_targetProperty = serializedObject.FindProperty("_target");
-
-			_stateProperty = serializedObject.FindProperty("_state");
-			_playingForwardProperty = serializedObject.FindProperty("_playingForward");
+			_isPlayingProperty = serializedObject.FindProperty("_isPlaying");
+			_isForwardProperty = serializedObject.FindProperty("_isForward");
 
 			_loopModeProperty = serializedObject.FindProperty("_loopMode");
 			_numIterationsProperty = serializedObject.FindProperty("_numIterations");
@@ -86,7 +79,6 @@ namespace TRUEStudios.Tweens {
 			EditorGUILayout.Space();
 
 			// draw properties
-			DrawTargetProperties();
 			DrawStateProperties();
 			DrawLoopProperties();
 			DrawDurationProperties();
@@ -101,19 +93,10 @@ namespace TRUEStudios.Tweens {
 		#endregion
 
 		#region Draw Methods
-		private void DrawTargetProperties ()
-		{
-			// set the initial target (begin or end), and target GameObject if available
-			EditorGUILayout.PropertyField(_awakeTargetProperty);
-			if (EnableTargetField) {
-				EditorGUILayout.PropertyField(_targetProperty);
-			}
-		}
-
 		private void DrawStateProperties () {
 			// display state
-			EditorGUILayout.PropertyField(_stateProperty);
-			EditorGUILayout.PropertyField(_playingForwardProperty);
+			EditorGUILayout.PropertyField(_isPlayingProperty);
+			EditorGUILayout.PropertyField(_isForwardProperty);
 			EditorGUILayout.Space();
 		}
 

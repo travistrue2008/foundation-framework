@@ -75,7 +75,7 @@ namespace TRUEStudios.Tweens {
 
 		public override void ApplyResult () {
 			_result = ((_end - _begin) * DistributedValue) + _begin;
-			TargetTransform.localRotation = Quaternion.Euler(_result);
+			transform.localRotation = Quaternion.Euler(_result);
 		}
 
 		protected override void PerformRelative () {

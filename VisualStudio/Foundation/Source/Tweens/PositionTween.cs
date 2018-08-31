@@ -23,22 +23,20 @@ namespace TRUEStudios.Tweens {
 
 		#region Methods
 		public override void ApplyResult () {
-			// handle based on transform space
 			_result = ((_end - _begin) * DistributedValue) + _begin;
 			switch (_transformSpace) {
 				case CoordinateSpace.Local:
-					TargetTransform.localPosition = _result;
+					transform.localPosition = _result;
 					break;
 
 				case CoordinateSpace.Global:
-					TargetTransform.position = _result;
+					transform.position = _result;
 					break;
 			}
 		}
 
 		protected override void PerformRelative () {
 			Vector3 diff = _end - _begin;
-
 			switch (_transformSpace) {
 				case CoordinateSpace.Local:
 					Begin = transform.localPosition;
