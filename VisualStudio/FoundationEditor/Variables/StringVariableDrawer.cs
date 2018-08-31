@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-namespace TRUEStudios.Variables {
+namespace TRUEStudios.Foundation.Variables {
 	[CustomPropertyDrawer(typeof(StringReference))]
 	public class StringVariableDrawer : BaseVariableDrawer {
 		#region Overrides

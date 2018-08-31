@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace TRUEStudios.Core {
+namespace TRUEStudios.Foundation.Core {
 	[Serializable]
 	public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, ISerializationCallbackReceiver {
 		[SerializeField]

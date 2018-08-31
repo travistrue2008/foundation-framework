@@ -7,10 +7,10 @@
 using System;
 using UnityEngine;
 using UnityEngine.Events;
-using TRUEStudios.Core;
-using TRUEStudios.Tweens;
+using TRUEStudios.Foundation.Core;
+using TRUEStudios.Foundation.Tweens;
 
-namespace TRUEStudios.UI {
+namespace TRUEStudios.Foundation.UI {
 	public class Popup : MonoBehaviour {
 		#region Fields
 		[SerializeField]

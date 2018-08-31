@@ -6,7 +6,7 @@
 
 using UnityEngine;
 
-namespace TRUEStudios.Events {
-	[CreateAssetMenu(menuName = "TRUEStudios/Events/Hub (float)", fileName = "New Event Hub (float)")]
+namespace TRUEStudios.Foundation.Events {
+	[CreateAssetMenu(menuName = "TRUEStudios.Foundation/Events/Hub (float)", fileName = "New Event Hub (float)")]
 	public class FloatEventHub : EventHub<float> {}
 }

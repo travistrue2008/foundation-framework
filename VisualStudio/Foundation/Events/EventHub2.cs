@@ -7,7 +7,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace TRUEStudios.Events {
+namespace TRUEStudios.Foundation.Events {
 	public abstract class EventHub<T0, T1> : ScriptableObject {
 		#region Fields
 		private List<EventListenerBase<T0, T1>> _listeners = new List<EventListenerBase<T0, T1>>();

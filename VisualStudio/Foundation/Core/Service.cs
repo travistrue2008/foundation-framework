@@ -6,7 +6,7 @@
 
 using UnityEngine;
 
-namespace TRUEStudios.Core {
+namespace TRUEStudios.Foundation.Core {
 	public abstract class Service : MonoBehaviour {
 		#region Methods
 		private bool _initialized = false;

@@ -9,7 +9,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace TRUEStudios.Core {
+namespace TRUEStudios.Foundation.Core {
 	[Serializable]
 	public class TimerEvent : UnityEvent<float> { }
 

@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using TRUEStudios.Core;
+using TRUEStudios.Foundation.Core;
 
 public static class BuildPackage {
 	#region Methods

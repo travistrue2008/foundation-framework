@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace TRUEStudios.Variables {
+namespace TRUEStudios.Foundation.Variables {
 	[Serializable]
 	public abstract class BaseReference<TValue, TVariable, TUnityEvent>
 		where TVariable : BaseVariable<TValue>

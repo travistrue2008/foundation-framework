@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-namespace TRUEStudios.Variables {
+namespace TRUEStudios.Foundation.Variables {
 	[CustomPropertyDrawer(typeof(BoolReference))]
 	public class BoolVariableDrawer : BaseVariableDrawer {
 		#region Overrides

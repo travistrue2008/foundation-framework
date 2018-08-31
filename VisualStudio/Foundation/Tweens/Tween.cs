@@ -8,10 +8,10 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
-using TRUEStudios.Core;
-using TRUEStudios.Events;
+using TRUEStudios.Foundation.Core;
+using TRUEStudios.Foundation.Events;
 
-namespace TRUEStudios.Tweens {
+namespace TRUEStudios.Foundation.Tweens {
 	public abstract class Tween : MonoBehaviour {
 		public enum PlaybackMode { Once, Looping, Pingpong }
 

@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-namespace TRUEStudios.Core {
+namespace TRUEStudios.Foundation.Core {
 	public class MenuItems {
 		#region Constants
 		public const string PackageName = "Foundation.unitypackage";

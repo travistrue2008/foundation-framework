@@ -14,7 +14,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace TRUEStudios.Core {
+namespace TRUEStudios.Foundation.Core {
 	public class Services : MonoBehaviour {
 		#region Constants
 		private const string Tag = "Services";

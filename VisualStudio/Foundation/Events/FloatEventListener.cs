@@ -7,7 +7,7 @@
 using System;
 using UnityEngine.Events;
 
-namespace TRUEStudios.Events {
+namespace TRUEStudios.Foundation.Events {
 	[Serializable]
 	public class FloatEvent : UnityEvent<float> {}
 

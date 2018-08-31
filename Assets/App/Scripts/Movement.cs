@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using TRUEStudios.Input;
+using TRUEStudios.Foundation.Input;
 
 public class Movement : MonoBehaviour {
 	#region Constants

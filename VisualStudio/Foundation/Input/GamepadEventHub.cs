@@ -5,9 +5,9 @@
 ******************************************************************************/
 
 using UnityEngine;
-using TRUEStudios.Events;
+using TRUEStudios.Foundation.Events;
 
-namespace TRUEStudios.Input {
-	[CreateAssetMenu(menuName = "TRUEStudios/Input/Event Hub (int, Button)", fileName = "New Event Hub (int, Button)")]
+namespace TRUEStudios.Foundation.Input {
+	[CreateAssetMenu(menuName = "TRUEStudios.Foundation/Input/Event Hub (int, Button)", fileName = "New Event Hub (int, Button)")]
 	public class GamepadEventHub : EventHub<int, Button> {}
 }

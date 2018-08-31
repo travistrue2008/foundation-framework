@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace TRUEStudios.Tweens {
+namespace TRUEStudios.Foundation.Tweens {
 	[CustomEditor(typeof(ColorTween)), CanEditMultipleObjects]
 	public class ColorTweenEditor : TweenEditor<ColorTween> {
 		#region Override Methods

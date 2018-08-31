@@ -8,7 +8,7 @@ using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace TRUEStudios.Input {
+namespace TRUEStudios.Foundation.Input {
 	public class GamepadController : MonoBehaviour {
 		#region Fields
 		[SerializeField]

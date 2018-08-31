@@ -6,7 +6,7 @@
 
 using UnityEngine;
 
-namespace TRUEStudios.Tweens {
+namespace TRUEStudios.Foundation.Tweens {
 	public class ScaleTween : Tween<Vector3> {
 		#region Methods
 		#if UNITY_EDITOR

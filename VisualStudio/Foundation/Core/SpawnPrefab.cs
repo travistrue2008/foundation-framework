@@ -7,7 +7,7 @@
 using System;
 using UnityEngine;
 
-namespace TRUEStudios.Core {
+namespace TRUEStudios.Foundation.Core {
 	public class SpawnPrefab : MonoBehaviour {
 		#region Fields
 		public GameObject defaultPrefab;

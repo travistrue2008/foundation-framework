@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-namespace TRUEStudios.Actions {
+namespace TRUEStudios.Foundation.Actions {
 	[Serializable]
 	public class PointerActionEvent : UnityEvent<Vector2> { }
 

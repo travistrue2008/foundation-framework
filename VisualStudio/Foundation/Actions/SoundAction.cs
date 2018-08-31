@@ -6,7 +6,7 @@
 
 using UnityEngine;
 
-namespace TRUEStudios.Actions {
+namespace TRUEStudios.Foundation.Actions {
 	[RequireComponent(typeof(AudioSource))]
 	public class SoundAction : MonoBehaviour {
 		#region Fields

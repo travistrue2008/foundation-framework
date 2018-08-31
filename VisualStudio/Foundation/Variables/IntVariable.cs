@@ -6,12 +6,12 @@
 
 using System;
 using UnityEngine;
-using TRUEStudios.Events;
+using TRUEStudios.Foundation.Events;
 
-namespace TRUEStudios.Variables {
+namespace TRUEStudios.Foundation.Variables {
 	[Serializable]
 	public class IntReference : BaseReference<int, IntVariable, IntEvent> { }
 
-	[CreateAssetMenu(menuName = "TRUEStudios/Variables/Int", fileName = "New Variable (int)")]
+	[CreateAssetMenu(menuName = "TRUEStudios.Foundation/Variables/Int", fileName = "New Variable (int)")]
 	public class IntVariable : BaseVariable<int> { }
 }

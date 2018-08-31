@@ -6,7 +6,7 @@
 
 using UnityEngine;
 
-namespace TRUEStudios.Tweens {
+namespace TRUEStudios.Foundation.Tweens {
 	public class RotationTween : Tween<Vector3> {
 		private enum Axis { X, Y, Z }
 

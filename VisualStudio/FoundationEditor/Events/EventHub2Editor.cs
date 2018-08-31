@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-namespace TRUEStudios.Events {
+namespace TRUEStudios.Foundation.Events {
 	public abstract class EventHub2Editor<T0, T1> : Editor {
 		#region Fields
 		private T0 _v0 = default(T0);

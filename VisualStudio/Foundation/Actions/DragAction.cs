@@ -8,9 +8,9 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
-using TRUEStudios.Tweens;
+using TRUEStudios.Foundation.Tweens;
 
-namespace TRUEStudios.Actions {
+namespace TRUEStudios.Foundation.Actions {
 	[RequireComponent(typeof(PositionTween))]
 	public class DragAction : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler {
 		#region Constants

@@ -10,9 +10,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using TRUEStudios.Core;
+using TRUEStudios.Foundation.Core;
 
-namespace TRUEStudios.UI {
+namespace TRUEStudios.Foundation.UI {
 	public class PopupStack: PrefabFactory<Popup> {
 		#region Fields
 		[SerializeField]

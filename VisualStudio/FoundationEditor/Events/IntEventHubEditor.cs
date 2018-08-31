@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-namespace TRUEStudios.Events {
+namespace TRUEStudios.Foundation.Events {
 	[CustomEditor(typeof(IntEventHub))]
 	public class IntEventHubEditor : EventHub1Editor<int> {
 		#region Override Methods

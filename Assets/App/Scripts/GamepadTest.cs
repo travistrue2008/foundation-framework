@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TRUEStudios.Input;
+using TRUEStudios.Foundation.Input;
 using TMPro;
 
 public class GamepadTest : MonoBehaviour {

@@ -6,12 +6,12 @@
 
 using System;
 using UnityEngine;
-using TRUEStudios.Events;
+using TRUEStudios.Foundation.Events;
 
-namespace TRUEStudios.Variables {
+namespace TRUEStudios.Foundation.Variables {
 	[Serializable]
 	public class BoolReference : BaseReference<bool, BoolVariable, BoolEvent> { }
 
-	[CreateAssetMenu(menuName = "TRUEStudios/Variables/Bool", fileName = "New Variable (bool)")]
+	[CreateAssetMenu(menuName = "TRUEStudios.Foundation/Variables/Bool", fileName = "New Variable (bool)")]
 	public class BoolVariable : BaseVariable<bool> { }
 }

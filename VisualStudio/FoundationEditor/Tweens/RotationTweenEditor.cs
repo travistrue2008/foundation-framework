@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace TRUEStudios.Tweens {
+namespace TRUEStudios.Foundation.Tweens {
 	[CustomEditor(typeof(RotationTween)), CanEditMultipleObjects]
 	public class RotationTweenEditor : TweenEditor<RotationTween> {
 		#region Fields

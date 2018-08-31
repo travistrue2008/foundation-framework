@@ -7,7 +7,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace TRUEStudios.Actions {
+namespace TRUEStudios.Foundation.Actions {
 	public class SceneAction : MonoBehaviour {
 		#region Fields
 		[SerializeField]

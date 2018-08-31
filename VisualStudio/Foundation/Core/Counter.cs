@@ -8,7 +8,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace TRUEStudios.Core {
+namespace TRUEStudios.Foundation.Core {
 	[Serializable]
 	public class CounterEvent : UnityEvent<int> { }
 

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using TRUEStudios.Events;
+using TRUEStudios.Foundation.Events;
 
-namespace TRUEStudios.Input {
+namespace TRUEStudios.Foundation.Input {
 	[CustomEditor(typeof(GamepadEventHub))]
 	public class GamepadEventHubEditor : EventHub2Editor<int, Button> {
 		#region Override Methods

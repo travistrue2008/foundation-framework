@@ -5,9 +5,9 @@
 ******************************************************************************/
 
 using UnityEngine;
-using TRUEStudios.Core;
+using TRUEStudios.Foundation.Core;
 
-namespace TRUEStudios.Tweens {
+namespace TRUEStudios.Foundation.Tweens {
 	public class PositionTween : Tween<Vector3> {		
 		#region Fields
 		[SerializeField]

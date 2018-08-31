@@ -10,7 +10,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace TRUEStudios.Tweens {
+namespace TRUEStudios.Foundation.Tweens {
 	[CustomEditor(typeof(AlphaTween)), CanEditMultipleObjects]
 	public class AlphaTweenEditor : TweenEditor<AlphaTween> {
 		#region Fields

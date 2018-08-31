@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace TRUEStudios.Tweens {
+namespace TRUEStudios.Foundation.Tweens {
 	[CustomEditor(typeof(Tween)), CanEditMultipleObjects]
 	public abstract class TweenEditor<T> : Editor where T : Tween {
 		#region Fields

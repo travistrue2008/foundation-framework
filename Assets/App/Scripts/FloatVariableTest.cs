@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TRUEStudios.Variables;
+using TRUEStudios.Foundation.Variables;
 
 public class FloatVariableTest : MonoBehaviour {
 	#region Fields

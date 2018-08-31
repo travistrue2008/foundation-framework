@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-namespace TRUEStudios.Variables {
+namespace TRUEStudios.Foundation.Variables {
 	public abstract class BaseVariableDrawer : PropertyDrawer {
 		#region Constants
 		public const float FieldHeight = 16.0f;

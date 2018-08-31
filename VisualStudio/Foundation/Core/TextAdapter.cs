@@ -7,9 +7,9 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using TRUEStudios.Events;
+using TRUEStudios.Foundation.Events;
 
-namespace TRUEStudios.Core {
+namespace TRUEStudios.Foundation.Core {
 	public class TextAdapter : MonoBehaviour {
 		#region Fields
 		[SerializeField]

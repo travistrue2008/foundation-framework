@@ -8,9 +8,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using TRUEStudios.Core;
+using TRUEStudios.Foundation.Core;
 
-namespace TRUEStudios.Tweens {
+namespace TRUEStudios.Foundation.Tweens {
 	[CustomEditor(typeof(PositionTween)), CanEditMultipleObjects]
 	public class PositionTweenEditor : TweenEditor<PositionTween> {
 		#region Fields

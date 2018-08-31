@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-namespace TRUEStudios.Actions {
+namespace TRUEStudios.Foundation.Actions {
 	[RequireComponent(typeof(Image))]
 	public class ButtonSpriteSwapAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler {
 		#region Fields

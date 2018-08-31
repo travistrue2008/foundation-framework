@@ -7,7 +7,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace TRUEStudios.Events {
+namespace TRUEStudios.Foundation.Events {
 	public class EventListener : MonoBehaviour {
 		#region Fields
 		[SerializeField]

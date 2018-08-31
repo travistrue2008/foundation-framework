@@ -7,7 +7,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace TRUEStudios.Events {
+namespace TRUEStudios.Foundation.Events {
 	public abstract class EventListenerBase<T0> : MonoBehaviour {
 		public abstract void OnInvoke (T0 v0);
 	}

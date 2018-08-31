@@ -6,9 +6,9 @@
 
 using System;
 using UnityEngine.Events;
-using TRUEStudios.Events;
+using TRUEStudios.Foundation.Events;
 
-namespace TRUEStudios.Input {
+namespace TRUEStudios.Foundation.Input {
 	[Serializable]
 	public class GamepadEvent : UnityEvent<int, Button> {}
 

@@ -8,9 +8,9 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using TRUEStudios.Events;
+using TRUEStudios.Foundation.Events;
 
-namespace TRUEStudios.Input {
+namespace TRUEStudios.Foundation.Input {
 	public enum Button : int {
 		A               = 1,
 		B               = 2,
@@ -28,7 +28,7 @@ namespace TRUEStudios.Input {
 		RightThumbstick = 8192,
 	}
 
-	[CreateAssetMenu(menuName = "TRUEStudios/Input/Gamepad", fileName = "New Gamepad")]
+	[CreateAssetMenu(menuName = "TRUEStudios.Foundation/Input/Gamepad", fileName = "New Gamepad")]
 	public class Gamepad : ScriptableObject {
 		#region Constants
 		private const string AKey = "button_a";

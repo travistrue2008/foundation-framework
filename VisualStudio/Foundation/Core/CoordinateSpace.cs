@@ -4,7 +4,7 @@
  * This framework is free to use with no limitations.
 ******************************************************************************/
 
-namespace TRUEStudios.Core {
+namespace TRUEStudios.Foundation.Core {
 	public enum CoordinateSpace {
 		Local,
 		Global,
