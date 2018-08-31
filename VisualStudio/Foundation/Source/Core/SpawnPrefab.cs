@@ -26,19 +26,18 @@ namespace TRUEStudios.Core {
 			}
 		}
 
-		public void Spawn (GameObject _prefab) {
+		public void Spawn (GameObject prefab) {
 			// check if the prefab isn't valid
-			if (_prefab == null) {
+			if (prefab == null) {
 				throw new Exception("No prefab reference set");
 			}
 
 			// attempt to instantiate the prefab as a GameObject
-			var obj = (GameObject)Instantiate(_prefab, transform.position, transform.rotation);
+			var obj = (GameObject)Instantiate(prefab, transform.position, transform.rotation, transform);
 			if (obj != null) {
-				obj.transform.SetParent(transform);
-				obj.transform.position = transform.position;
+				obj.transform.localScale = Vector3.one;
 			} else {
-				throw new Exception("Unable to spawn prefab as a GameObject: " + _prefab.name);
+				throw new Exception("Unable to spawn prefab as a GameObject: " + prefab.name);
 			}
 		}
 		#endregion
