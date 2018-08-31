@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TRUEStudios.Core;
 
-namespace TRUEStudios.UI {
+namespace TRUEStudios.Core {
 	public class PrefabProfile {
 		public Type ComponentType { private set; get; }
 		public GameObject Prefab { private set; get; }
@@ -20,7 +20,7 @@ namespace TRUEStudios.UI {
 		}
 	}
 
-	public class PrefabFactoryService<TBase> : Service where TBase : MonoBehaviour {
+	public class PrefabFactory<TBase> : MonoBehaviour where TBase : MonoBehaviour {
 		#region Fields
 		[SerializeField]
 		private string _prefabDirectory;
@@ -29,7 +29,7 @@ namespace TRUEStudios.UI {
 		#endregion
 
 		#region Virtual Methods
-		protected virtual void OnPushInstance (TBase component) { }
+		protected virtual void OnInstantiate (TBase component) { }
 		#endregion
 
 		#region Load/Release prefab profiles
@@ -70,7 +70,7 @@ namespace TRUEStudios.UI {
 			}
 		}
 
-		protected T PushInstance<T> (string prefabName, Transform spawnTransform) where T : TBase {
+		protected T Instantiate<T> (string prefabName, Transform spawnTransform) where T : TBase {
 			PrefabProfile profile = null;
 
 			// attempt to get the prefab profile
@@ -84,10 +84,10 @@ namespace TRUEStudios.UI {
 				}
 			}
 
-			return PushInstance<T>(profile.Prefab, spawnTransform);
+			return Instantiate<T>(profile.Prefab, spawnTransform);
 		}
 
-		protected T PushInstance<T> (GameObject prefab, Transform spawnTransform) where T : TBase {
+		protected T Instantiate<T> (GameObject prefab, Transform spawnTransform) where T : TBase {
 			T component = null;
 
 			// make sure a prefab is available
@@ -103,7 +103,7 @@ namespace TRUEStudios.UI {
 				if (component != null) {
 					// setup the component's transform
 					obj.transform.SetParent(spawnTransform);
-					OnPushInstance(component);
+					OnInstantiate(component);
 				} else {
 					Destroy(obj);
 					throw new Exception("No popup of type '" + typeof(T).ToString() + "' attached.");

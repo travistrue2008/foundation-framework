@@ -11,6 +11,8 @@ namespace TRUEStudios.State.Tests {
 		#region Fields
 		[SerializeField]
 		private Popup _testPopup;
+		[SerializeField]
+		private PopupStack _popupStack;
 		#endregion
 
 		#region Methods
@@ -30,12 +32,12 @@ namespace TRUEStudios.State.Tests {
 
 			// instantly create popups
 			for (int i = 0; i < numPopups; ++i) {
-				Services.Get<PopupService>().PushPopup<Popup>(_testPopup);
+				_popupStack.Push<Popup>(_testPopup);
 			}
 
 			// instantly destroy popups
 			for (int i = 0; i < numPopups; ++i) {
-				Services.Get<PopupService>().PopPopup();
+				_popupStack.Pop();
 			}
 		}
 
@@ -62,13 +64,13 @@ namespace TRUEStudios.State.Tests {
 		private IEnumerator ProcessFrameDelayTest (int numPopups) {
 			// create popups
 			for (int i = 0; i < numPopups; ++i) {
-				Services.Get<PopupService>().PushPopup<Popup>(_testPopup);
+				_popupStack.Push<Popup>(_testPopup);
 				yield return null;
 			}
 
 			// destroy popups
-			while (Services.Get<PopupService>().CurrentPopup != null) {
-				Services.Get<PopupService>().PopPopup();
+			while (_popupStack.CurrentPopup != null) {
+				_popupStack.Pop();
 				yield return null;
 			}
 		}
@@ -76,16 +78,16 @@ namespace TRUEStudios.State.Tests {
 		private IEnumerator ProcessFullDelayTest (int numPopups) {
 			// create popups
 			for (int i = 0; i < numPopups; ++i) {
-				Services.Get<PopupService>().PushPopup<Popup>(_testPopup);
-				while (Services.Get<PopupService>().IsTransitioning) {
+				_popupStack.Push<Popup>(_testPopup);
+				while (_popupStack.IsTransitioning) {
 					yield return null;
 				}
 			}
 
 			// destroy popups
-			while (Services.Get<PopupService>().CurrentPopup != null) {
-				Services.Get<PopupService>().PopPopup();
-				while (Services.Get<PopupService>().IsTransitioning) {
+			while (_popupStack.CurrentPopup != null) {
+				_popupStack.Pop();
+				while (_popupStack.IsTransitioning) {
 					yield return null;
 				}
 			}

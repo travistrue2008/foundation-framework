@@ -19,6 +19,8 @@ namespace TRUEStudios.UI {
 		private GameObject _firstResponder;
 		[SerializeField]
 		private UnityEvent _onClose = new UnityEvent();
+
+		private PopupStack _stack;
 		#endregion
 
 		#region Properties
@@ -28,9 +30,10 @@ namespace TRUEStudios.UI {
 		#endregion
 
 		#region Setup
-		protected virtual void Awake () {
-			if (_transitionTween == null) {
-				_transitionTween = GetComponent<Tween>();
+		protected virtual void Start () {
+			_stack = transform.parent.parent.GetComponent<PopupStack>();
+			if (_stack == null) {
+				Debug.LogWarning("Popup was spawned, but not managed by the PopupStack");
 			}
 		}
 
@@ -43,10 +46,10 @@ namespace TRUEStudios.UI {
 
 		public void Dismiss () {
 			// only pop the last popup off the stack if it's this particular popup
-			if (Services.Get<PopupService>().CurrentPopup == this) {
-				Services.Get<PopupService>().PopPopup();
+			if (_stack.CurrentPopup == this) {
+				_stack.Pop();
 			} else {
-				Debug.LogWarning("This popup isn't the active popup.");
+				Debug.LogWarning("This popup isn't the active popup");
 			}
 		}
 		#endregion

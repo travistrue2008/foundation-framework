@@ -13,7 +13,7 @@ using UnityEngine.EventSystems;
 using TRUEStudios.Core;
 
 namespace TRUEStudios.UI {
-	public class PopupService : PrefabFactoryService<Popup> {
+	public class PopupStack: PrefabFactory<Popup> {
 		#region Fields
 		[SerializeField]
 		private Image _stackBlockerImage;
@@ -50,7 +50,7 @@ namespace TRUEStudios.UI {
 		#endregion
 
 		#region MonoBehaviour Hooks
-		protected override void OnInitialize () {
+		private void Awake () {
 			// make sure required references are set in the Inspector
 			if (_stackBlockerImage == null || _transitionBlockerImage == null || _popupSpawn == null) {
 				throw new Exception("Check the Inspector for missing references.");
@@ -59,11 +59,7 @@ namespace TRUEStudios.UI {
 		#endregion
 
 		#region Stack Controls
-		protected override void OnPushInstance (Popup popup) {
-			// make sure both blocker images are active
-			_stackBlockerImage.gameObject.SetActive(true);
-			_transitionBlockerImage.gameObject.SetActive(true);
-
+		protected override void OnInstantiate (Popup popup) {
 			// setup the rect transform
 			RectTransform rectTransform = (RectTransform)popup.transform;
 			rectTransform.position = Vector3.zero;
@@ -96,15 +92,25 @@ namespace TRUEStudios.UI {
 			_transitionRoutine = StartCoroutine(ProcessPush());
 		}
 
-		public T PushPopup<T> (string prefabName) where T : Popup {
-			return PushInstance<T>(prefabName, _popupSpawn);
+		// UnityEvent compatibility
+		public void PushPopup(string prefabName) {
+			Instantiate<Popup>(prefabName, _popupSpawn);
 		}
 
-		public T PushPopup<T> (Popup popupPrefab) where T : Popup {
-			return PushInstance<T>(popupPrefab.gameObject, _popupSpawn);
+		public T Push<T> (string prefabName) where T : Popup {
+			return Instantiate<T>(prefabName, _popupSpawn);
 		}
 
-		public Popup PopPopup () {
+		// UnityEvent compatibility
+		public void PushPopup (Popup prefab) {
+			Instantiate<Popup>(prefab.gameObject, _popupSpawn);
+		}
+
+		public T Push<T> (Popup prefab) where T : Popup {
+			return Instantiate<T>(prefab.gameObject, _popupSpawn);
+		}
+
+		public Popup Pop () {
 			// make sure there is a popup to dismiss
 			Popup dismissingPopup = CurrentPopup;
 			if (dismissingPopup != null) {
@@ -113,10 +119,6 @@ namespace TRUEStudios.UI {
 					Debug.LogWarning("No popups available to dismiss.");
 					return null;
 				}
-
-				// make sure both blocker images are active
-				_stackBlockerImage.gameObject.SetActive(true);
-				_transitionBlockerImage.gameObject.SetActive(true);
 
 				// stop any current transition, and begin the new one
 				CancelTransition();
@@ -170,6 +172,10 @@ namespace TRUEStudios.UI {
 
 		#region Coroutines
 		private IEnumerator ProcessPush () {
+			// make sure both blocker images are active
+			_stackBlockerImage.gameObject.SetActive(true);
+			_transitionBlockerImage.gameObject.SetActive(true);
+
 			// check if there was a previous popup
 			if (StackSize > 1) {
 				// get the previous popup, and check if it's got a transition tween
@@ -198,18 +204,18 @@ namespace TRUEStudios.UI {
 		}
 
 		private IEnumerator ProcessPop () {
-			// set flag
-			_transitioningOut = true; {
-				// hide the current popup
-				if (CurrentPopup.isActiveAndEnabled && CurrentPopup.TransitionTween != null) {
-					yield return CurrentPopup.TransitionTween.Play(false);
-				}
-				
-				// remove the popup reference, and destroy the popup
-				Popup removedPopup = CurrentPopup;
-				_stack.Remove(removedPopup);
-				Destroy(removedPopup.gameObject);
+			_transitionBlockerImage.gameObject.SetActive(true);
+			_transitioningOut = true;
+
+			// hide the current popup
+			if (CurrentPopup.isActiveAndEnabled && CurrentPopup.TransitionTween != null) {
+				yield return CurrentPopup.TransitionTween.Play(false);
 			}
+				
+			// remove the popup reference, and destroy the popup
+			Popup removedPopup = CurrentPopup;
+			_stack.Remove(removedPopup);
+			Destroy(removedPopup.gameObject);
 			_transitioningOut = false; // unset flag
 
 			// check if there are any popups left in the stack
