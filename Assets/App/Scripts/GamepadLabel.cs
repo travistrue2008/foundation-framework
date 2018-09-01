@@ -5,7 +5,7 @@ using UnityEngine;
 using TRUEStudios.Foundation.Input;
 using TMPro;
 
-public class GamepadTest : MonoBehaviour {
+public class GamepadLabel : MonoBehaviour {
 	#region Fields
 	[SerializeField]
 	private Gamepad _gamepad;
