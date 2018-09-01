@@ -3,9 +3,11 @@
 ## Features
 
 Contains some useful, baseline features:
-- Common-use tweens for quick, one-off animations
 - Event hubs for decoupling events from the responding GameObjects
 - Singleton services for maintaining persistent state (deprecated)
+- Common use tweens for quick, one-off animations
+- Basic XBox One gamepad interface (with events)
+- Scene transitions
 - Popup stack
 
 ## Building
