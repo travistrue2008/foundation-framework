@@ -12,6 +12,6 @@ namespace TRUEStudios.Foundation.Variables {
 	[Serializable]
 	public class BoolReference : BaseReference<bool, BoolVariable, BoolEvent> { }
 
-	[CreateAssetMenu(menuName = "TRUEStudios.Foundation/Variables/Bool", fileName = "New Variable (bool)")]
+	[CreateAssetMenu(menuName = "TRUEStudios/Foundation/Variables/Bool", fileName = "New Variable (bool)")]
 	public class BoolVariable : BaseVariable<bool> { }
 }

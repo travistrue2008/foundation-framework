@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace TRUEStudios.Foundation.Events {
-	[CreateAssetMenu(menuName = "TRUEStudios.Foundation/Events/Hub", fileName = "New Event Hub")]
+	[CreateAssetMenu(menuName = "TRUEStudios/Foundation/Events/Hub", fileName = "New Event Hub")]
 	public class EventHub : ScriptableObject {
 		#region Fields
 		private List<EventListener> _listeners = new List<EventListener>();

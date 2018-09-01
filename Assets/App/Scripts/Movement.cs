@@ -5,17 +5,16 @@ using UnityEngine.Events;
 using TRUEStudios.Foundation.Input;
 
 public class Movement : MonoBehaviour {
-	#region Constants
-	public const float Speed = 0.1f;
-	#endregion
-
 	#region Fields
+	[SerializeField]
+	public float _speed = 10.0f;
 	[SerializeField]
 	private Gamepad _gamepad;
 	[SerializeField]
 	private UnityEvent _onCollide = new UnityEvent();
 
-	private Vector2 _position = Vector3.zero;
+	private Vector3 _velocity = Vector3.zero;
+	private Rigidbody _rigidBody;
 	#endregion
 
 	#region Properties
@@ -23,13 +22,20 @@ public class Movement : MonoBehaviour {
 	#endregion
 
 	#region MonoBehaviour Hooks
+	private void Awake () {
+		_rigidBody = GetComponent<Rigidbody>();
+	}
+
 	private void Update () {
-		_position.x += (_gamepad.LeftAxis.x * Speed);
-		_position.y += (_gamepad.LeftAxis.y * Speed);
-		transform.localPosition = _position;
+		_velocity.Set(_gamepad.LeftAxis.x * _speed, 0.0f, _gamepad.LeftAxis.y * _speed);
+		_rigidBody.velocity = _velocity;
 	}
 
 	private void OnCollisionEnter (Collision other) {
+		foreach (var contact in other.contacts) {
+			Debug.Log(contact.point);
+		}
+
 		_onCollide.Invoke();
 	}
 	#endregion

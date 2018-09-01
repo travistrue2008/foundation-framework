@@ -12,6 +12,6 @@ namespace TRUEStudios.Foundation.Variables {
 	[Serializable]
 	public class FloatReference : BaseReference<float, FloatVariable, FloatEvent> {}
 
-	[CreateAssetMenu(menuName = "TRUEStudios.Foundation/Variables/Float", fileName = "New Variable (float)")]
+	[CreateAssetMenu(menuName = "TRUEStudios/Foundation/Variables/Float", fileName = "New Variable (float)")]
 	public class FloatVariable : BaseVariable<float> {}
 }

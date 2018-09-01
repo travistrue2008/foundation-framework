@@ -12,6 +12,6 @@ namespace TRUEStudios.Foundation.Variables {
 	[Serializable]
 	public class IntReference : BaseReference<int, IntVariable, IntEvent> { }
 
-	[CreateAssetMenu(menuName = "TRUEStudios.Foundation/Variables/Int", fileName = "New Variable (int)")]
+	[CreateAssetMenu(menuName = "TRUEStudios/Foundation/Variables/Int", fileName = "New Variable (int)")]
 	public class IntVariable : BaseVariable<int> { }
 }

@@ -28,7 +28,7 @@ namespace TRUEStudios.Foundation.Input {
 		RightThumbstick = 8192,
 	}
 
-	[CreateAssetMenu(menuName = "TRUEStudios.Foundation/Input/Gamepad", fileName = "New Gamepad")]
+	[CreateAssetMenu(menuName = "TRUEStudios/Foundation/Input/Gamepad", fileName = "New Gamepad")]
 	public class Gamepad : ScriptableObject {
 		#region Constants
 		private const string AKey = "button_a";

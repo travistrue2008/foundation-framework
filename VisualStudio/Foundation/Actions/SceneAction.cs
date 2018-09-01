@@ -4,10 +4,11 @@
  * This framework is free to use with no limitations.
 ******************************************************************************/
 
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace TRUEStudios.Foundation.Actions {
+namespace TRUEStudios.Foundation.Core {
 	public class SceneAction : MonoBehaviour {
 		#region Fields
 		[SerializeField]
@@ -15,7 +16,11 @@ namespace TRUEStudios.Foundation.Actions {
 		#endregion
 
 		#region Methods
-		public void GotoScene () {
+		public void GotoScene() {
+			GotoScene(_sceneName);
+		}
+
+		public void GotoScene (string sceneName) {
 			SceneManager.LoadScene(_sceneName);
 		}
 		#endregion
