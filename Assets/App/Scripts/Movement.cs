@@ -32,10 +32,6 @@ public class Movement : MonoBehaviour {
 	}
 
 	private void OnCollisionEnter (Collision other) {
-		foreach (var contact in other.contacts) {
-			Debug.Log(contact.point);
-		}
-
 		_onCollide.Invoke();
 	}
 	#endregion

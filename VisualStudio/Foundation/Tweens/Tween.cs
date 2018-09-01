@@ -150,7 +150,10 @@ namespace TRUEStudios.Foundation.Tweens {
 		}
 
 		public Coroutine Play (bool forward = true, bool reset = false, bool relative = false) {
-			if (_isPlaying && _processRoutine != null) { return null; } // don't process if already playing
+			// return the coroutine if already in the middle of playing
+			if (_isPlaying && _processRoutine != null) {
+				return _processRoutine;
+			}
 
 			// set playback direction, and check if the tween should be adjusted relatively
 			_isForward = forward;
