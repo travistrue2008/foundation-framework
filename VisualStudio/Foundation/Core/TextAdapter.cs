@@ -33,12 +33,6 @@ namespace TRUEStudios.Foundation.Core {
 		}
 		#endregion
 
-		#region MonoBehaviour Hooks
-		private void OnValidate () {
-			Format = _format;
-		}
-		#endregion
-
 		#region Actions
 		public void Set (bool value) {
 			Send(value);
