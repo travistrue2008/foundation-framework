@@ -27,17 +27,20 @@ namespace TRUEStudios.Foundation.UI {
 		public Tween TransitionTween { get { return _transitionTween; } }
 		public GameObject FirstResponder { get { return _firstResponder; } }
 		public UnityEvent OnClose { get { return _onClose; } }
+
+		public PopupStack Stack {
+			get {
+				// cache the stack if not already (necessary since Popups are meant to be instantiated)
+				if (_stack == null) {
+					_stack = transform.parent.parent.GetComponent<PopupStack>();
+				}
+
+				return _stack;
+			}
+		}
 		#endregion
 
 		#region Setup
-		protected virtual void Start () {
-			// get the parent PopupStack
-			_stack = transform.parent.parent.GetComponent<PopupStack>();
-			if (_stack == null) {
-				Debug.LogWarning("Popup was spawned, but not managed by the PopupStack");
-			}
-		}
-
 		protected virtual void OnDestroy () {
 			// signal the closed event
 			if (_onClose != null) {
@@ -47,8 +50,8 @@ namespace TRUEStudios.Foundation.UI {
 
 		public void Dismiss (bool clear = false) {
 			// only pop the last popup off the stack if it's this particular popup
-			if (_stack.CurrentPopup == this) {
-				_stack.Pop(clear); // clear the stack if necessary
+			if (Stack.CurrentPopup == this) {
+				Stack.Pop(clear); // clear the stack if necessary
 			} else {
 				Debug.LogWarning("This popup isn't the active popup");
 			}

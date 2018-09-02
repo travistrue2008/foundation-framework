@@ -63,7 +63,7 @@ namespace TRUEStudios.Foundation.Core {
 
 		#region Private Methods
 		private void Send () {
-			string result = (_cache != null) ? String.Format(_format, _cache) : string.Empty;
+			string result = (_cache != null) ? string.Format(_format, _cache) : string.Empty;
 			_onSet.Invoke(result);
 		}
 		#endregion

@@ -18,8 +18,8 @@ namespace TRUEStudios.State.Tests {
 		#region Methods
 		private IEnumerator Start () {
 			RunInstantTest(10);
-			yield return RunFrameDelayTest(10);
-			yield return RunFullDelayTest(10);
+			// yield return RunFrameDelayTest(10);
+			// yield return RunFullDelayTest(10);
 			yield return RunPopClearTest(10);
 		}
 		#endregion
@@ -104,16 +104,18 @@ namespace TRUEStudios.State.Tests {
 		}
 
 		private IEnumerator ProcessPopClearTest (int numPopups) {
+			yield return null;
+
 			// create popups
 			for (int i = 0; i < numPopups; ++i) {
 				_popupStack.Push<Popup>(_testPopup);
-				while (_popupStack.IsTransitioning) {
-					yield return null;
-				}
 			}
 
 			// pop the current popup, and clear the stack
 			_popupStack.CurrentPopup.Dismiss(true);
+			while (_popupStack.IsTransitioning) {
+				yield return null;
+			}
 		}
 		#endregion
 	}

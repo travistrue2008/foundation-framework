@@ -51,6 +51,16 @@ namespace TRUEStudios.Foundation.Variables {
 	}
 
 	public class BaseVariable<T> : ScriptableObject {
-		public T Value;
+		#region
+		[SerializeField]
+		public T _value;
+		#endregion
+
+		#region Properties
+		public T Value {
+			set { _value = value; }
+			get { return _value; }
+		}
+		#endregion
 	}
 }
