@@ -53,13 +53,33 @@ namespace TRUEStudios.Foundation.Variables {
 	public class BaseVariable<T> : ScriptableObject {
 		#region
 		[SerializeField]
-		public T _value;
+		private bool _resetOnDestroy;
+		[SerializeField]
+		private T _initialValue;
+		[SerializeField]
+		private T _value;
 		#endregion
 
 		#region Properties
+		public bool ResetOnDestroy {
+			set { _resetOnDestroy = value; }
+			get { return _resetOnDestroy; }
+		}
+
+		public T InitialValue {
+			set { _initialValue = value; }
+			get { return _initialValue; }
+		}
+
 		public T Value {
 			set { _value = value; }
 			get { return _value; }
+		}
+		#endregion
+
+		#region ScriptableObject Hooks
+		private void OnEnable () {
+			_value = _initialValue;
 		}
 		#endregion
 	}
