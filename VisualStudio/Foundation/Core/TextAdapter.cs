@@ -26,7 +26,7 @@ namespace TRUEStudios.Foundation.Core {
 		public string Format {
 			set {
 				_format = value;
-				Send();
+				Send(_cache);
 			}
 
 			get { return _format; }
@@ -41,28 +41,26 @@ namespace TRUEStudios.Foundation.Core {
 
 		#region Actions
 		public void Set (bool value) {
-			_cache = value;
-			Send();
+			Send(value);
 		}
 
 		public void Set(int value) {
-			_cache = value;
-			Send();
+			Send(value);
 		}
 
 		public void Set(float value) {
-			_cache = value;
-			Send();
+			Send(value);
 		}
 
 		public void Set(string value) {
-			_cache = value;
-			Send();
+			Send(value);
 		}
 		#endregion
 
 		#region Private Methods
-		private void Send () {
+		private void Send (object value) {
+			_cache = value;
+
 			string result = (_cache != null) ? string.Format(_format, _cache) : string.Empty;
 			_onSet.Invoke(result);
 		}

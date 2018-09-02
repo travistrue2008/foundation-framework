@@ -18,6 +18,8 @@ namespace TRUEStudios.Foundation.UI {
 		[SerializeField]
 		private string _sceneName;
 		[SerializeField]
+		private float _minWait = 0.0f;
+		[SerializeField]
 		private Tween _transitionTween;
 		[SerializeField]
 		private UnityEvent _onLoadStart = new UnityEvent();
@@ -40,8 +42,10 @@ namespace TRUEStudios.Foundation.UI {
 		}
 		#endregion
 
-		#region Methods
+		#region MonoBehaviour Hooks
 		protected virtual IEnumerator Start () {
+			DontDestroyOnLoad(gameObject);
+
 			// transition in
 			if (_transitionTween != null) {
 				yield return _transitionTween.Play();
@@ -56,13 +60,22 @@ namespace TRUEStudios.Foundation.UI {
 			Destroy(gameObject);
 		}
 
+		protected virtual void OnValidate () {
+			_minWait = Mathf.Max(0.0f, _minWait);
+		}
+		#endregion
+
+		#region Private Methods
 		private IEnumerator ProcessLoadScene(string name) {
+			float elapsedTime = 0.0f;
+
 			// load the scene, and wait for it to finish
 			AsyncOperation op = SceneManager.LoadSceneAsync(name);
 			_onLoadStart.Invoke();
 
 			// wait for it to finish
-			while (!op.isDone) {
+			while (!op.isDone || elapsedTime < _minWait) {
+				elapsedTime += Time.deltaTime;
 				_onProgress.Invoke(op.progress);
 				yield return null;
 			}
