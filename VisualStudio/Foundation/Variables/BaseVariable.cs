@@ -33,10 +33,10 @@ namespace TRUEStudios.Foundation.Variables {
 				bool changed = false;
 
 				if (UseConstant) {
-					changed = EqualityComparer<TValue>.Default.Equals(_constantValue, value);
+					changed = !EqualityComparer<TValue>.Default.Equals(_constantValue, value);
 					_constantValue = value;
 				} else {
-					changed = EqualityComparer<TValue>.Default.Equals(_variable.Value, value);
+					changed = !EqualityComparer<TValue>.Default.Equals(_variable.Value, value);
 					_variable.Value = value;
 				}
 
